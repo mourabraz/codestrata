@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": ["node"],
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@streaming/availability-service": ["./packages/availability-service/src/index.ts"],
+      "@streaming/bff-config": ["./packages/bff-config/src/index.ts"],
+      "@streaming/catalog-service": ["./packages/catalog-service/src/index.ts"],
+      "@streaming/core-services": ["./packages/core-services/src/index.ts"],
+      "@streaming/envelop-plugins": ["./packages/envelop-plugins/src/index.ts"],
+      "@streaming/gql-common": ["./packages/gql-common/src/index.ts"],
+      "@streaming/gql-module-availability": ["./packages/gql-module-availability/src/index.ts"],
+      "@streaming/gql-module-catalog": ["./packages/gql-module-catalog/src/index.ts"],
+      "@streaming/gql-module-layout": ["./packages/gql-module-layout/src/index.ts"],
+      "@streaming/gql-module-promotions": ["./packages/gql-module-promotions/src/index.ts"],
+      "@streaming/http-client": ["./packages/http-client/src/index.ts"],
+      "@streaming/layout-types": ["./packages/layout-types/src/index.ts"],
+      "@streaming/people-service": ["./packages/people-service/src/index.ts"],
+      "@streaming/promotions-service": ["./packages/promotions-service/src/index.ts"],
+      "@streaming/test-utils": ["./packages/test-utils/src/index.ts"],
+      "@streaming/urn-codecs": ["./packages/urn-codecs/src/index.ts"]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "persistedOperationsOnly": true,
+  "endpoints": {
+    "catalogApi": "https://catalog.internal.example",
+    "peopleApi": "https://people.internal.example/graphql",
+    "promotionsApi": "https://promotions.internal.example",
+    "availabilityApi": "https://availability.internal.example",
+    "cmsApi": "https://cms.internal.example"
+  }
+}

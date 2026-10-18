@@ -1,0 +1,17 @@
+type Promotion implements Node @key(fields: "urn") {
+  urn: URN!
+  headline: String!
+  description: String
+  validUntil: String
+  "Pointer to the promoted title (resolved by the catalog module)."
+  title: Title
+  "Formatted title name, fetched from the catalog service by this module."
+  titleName: String
+  "How the promotion looks as a card."
+  displayCard: Card!
+}
+
+type Query {
+  promotions(region: String): [Promotion!]!
+  promotion(urn: URN!): Promotion
+}

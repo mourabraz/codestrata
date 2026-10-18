@@ -1,0 +1,234 @@
+{
+  "note": "Hand-written from fixtures/streaming-bff/EXPECTED.md §3 and §5. The real tool will derive this (phase 3).",
+  "operations": [
+    {
+      "name": "HomeView",
+      "file": "apps/bff/persisted-operations/HomeView.graphql",
+      "fields": [
+        {
+          "path": "view",
+          "type": "View",
+          "resolver": "gql-module-layout/src/resolvers/index.ts:5",
+          "chain": [
+            { "kind": "service", "label": "ContentDefinitionService.getView", "where": "core-services" },
+            { "kind": "retriever", "label": "getCmsDocumentByUid", "where": "core-services" },
+            { "kind": "call", "label": "GET /documents", "api": "cms-api" }
+          ],
+          "note": "Sections come from the CMS. Each document type is turned into a layout element by a registered mapper: card_group, title_card, promo_card, title_rail, swimlane.",
+          "children": [
+            {
+              "path": "sections[CardGroup].cards.target",
+              "type": "Node",
+              "resolver": "gql-module-layout/src/resolvers/index.ts (Card.target)",
+              "pointer": true,
+              "chain": [{ "kind": "dispatch", "label": "Node.__resolveType by URN prefix", "where": "gql-common" }],
+              "children": [
+                {
+                  "path": "… on Title { name }",
+                  "type": "String",
+                  "resolver": "gql-module-catalog/src/resolvers/title.resolvers.ts:8",
+                  "chain": [
+                    { "kind": "service", "label": "CatalogService.getTitle", "where": "catalog-service" },
+                    { "kind": "retriever", "label": "getTitlesByIds (batched)", "where": "catalog-service" },
+                    { "kind": "call", "label": "GET /titles", "api": "catalog-api" }
+                  ]
+                },
+                {
+                  "path": "… on Title { availability }",
+                  "type": "Availability",
+                  "resolver": "gql-module-availability/src/resolvers/index.ts:6",
+                  "subgraph": "availability",
+                  "chain": [
+                    { "kind": "service", "label": "AvailabilityService.getForTitle", "where": "availability-service" },
+                    { "kind": "retriever", "label": "getAvailability (batched by region)", "where": "availability-service" },
+                    { "kind": "call", "label": "GET /live/availability", "api": "availability-api" }
+                  ]
+                },
+                {
+                  "path": "… on Promotion { headline }",
+                  "type": "String",
+                  "resolver": "gql-module-promotions/src/resolvers/promotion.resolvers.ts:18",
+                  "chain": [
+                    { "kind": "service", "label": "PromotionsService.getPromotion", "where": "promotions-service" },
+                    { "kind": "retriever", "label": "getPromotionsByIds", "where": "promotions-service" },
+                    { "kind": "call", "label": "GET /v2/promotions?ids=", "api": "promotions-api" }
+                  ]
+                }
+              ]
+            },
+            {
+              "path": "sections[Swimlane].items",
+              "type": "[Node]",
+              "resolver": "default resolver (SwimlaneElement.items)",
+              "pointer": true,
+              "chain": [{ "kind": "dispatch", "label": "Node.__resolveType by URN prefix", "where": "gql-common" }],
+              "children": [
+                {
+                  "path": "… on Title { name year }",
+                  "type": "String, Int",
+                  "resolver": "gql-module-catalog/src/resolvers/title.resolvers.ts:8,10",
+                  "chain": [
+                    { "kind": "service", "label": "CatalogService.getTitle", "where": "catalog-service" },
+                    { "kind": "call", "label": "GET /titles", "api": "catalog-api", "shared": true }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TitleDetail",
+      "file": "apps/bff/persisted-operations/TitleDetail.graphql",
+      "fields": [
+        {
+          "path": "title",
+          "type": "Title",
+          "resolver": "gql-module-catalog/src/resolvers/query.resolvers.ts:7",
+          "chain": [
+            { "kind": "service", "label": "CatalogService.getTitle", "where": "catalog-service" },
+            { "kind": "call", "label": "GET /titles", "api": "catalog-api" }
+          ],
+          "children": [
+            {
+              "path": "name synopsis year genres",
+              "type": "scalars",
+              "resolver": "gql-module-catalog/src/resolvers/title.resolvers.ts:8-11",
+              "chain": [{ "kind": "service", "label": "CatalogService.getTitle (cached by DataLoader)", "where": "catalog-service" }]
+            },
+            {
+              "path": "cast { name }",
+              "type": "[Person]",
+              "resolver": "gql-module-catalog/src/resolvers/person.resolvers.ts:8",
+              "pointer": true,
+              "chain": [
+                { "kind": "service", "label": "PeopleService.getPerson", "where": "people-service" },
+                { "kind": "call", "label": "query PeopleByIds", "api": "people-api (GraphQL)" }
+              ]
+            },
+            {
+              "path": "similar { name }",
+              "type": "[Title]",
+              "resolver": "gql-module-catalog/src/resolvers/title.resolvers.ts:15",
+              "pointer": true,
+              "chain": [
+                { "kind": "service", "label": "CatalogService.getTitle", "where": "catalog-service" },
+                { "kind": "call", "label": "GET /titles", "api": "catalog-api", "shared": true }
+              ]
+            },
+            {
+              "path": "availability",
+              "type": "Availability",
+              "resolver": "gql-module-availability/src/resolvers/index.ts:6",
+              "subgraph": "availability",
+              "chain": [
+                { "kind": "service", "label": "AvailabilityService.getForTitle", "where": "availability-service" },
+                { "kind": "call", "label": "GET /live/availability", "api": "availability-api" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PromotionsList",
+      "file": "apps/bff/persisted-operations/PromotionsList.graphql",
+      "fields": [
+        {
+          "path": "promotions",
+          "type": "[Promotion]",
+          "resolver": "gql-module-promotions/src/resolvers/query.resolvers.ts:6",
+          "chain": [
+            { "kind": "service", "label": "PromotionsService.listActive", "where": "promotions-service" },
+            { "kind": "retriever", "label": "getActivePromotions", "where": "promotions-service" },
+            { "kind": "call", "label": "GET /v2/promotions?status=active", "api": "promotions-api" }
+          ],
+          "children": [
+            {
+              "path": "headline validUntil",
+              "type": "scalars",
+              "resolver": "gql-module-promotions/src/resolvers/promotion.resolvers.ts:18,20",
+              "chain": [{ "kind": "service", "label": "PromotionsService.getPromotion (primed)", "where": "promotions-service" }]
+            },
+            {
+              "path": "titleName",
+              "type": "String",
+              "resolver": "gql-module-promotions/src/resolvers/promotion.resolvers.ts:27",
+              "warning": "Reads the catalog module's service directly (cross-module service sharing).",
+              "chain": [
+                { "kind": "service", "label": "CatalogService.getTitle", "where": "catalog-service", "crossModule": true },
+                { "kind": "call", "label": "GET /titles", "api": "catalog-api" }
+              ]
+            },
+            {
+              "path": "title { urn }",
+              "type": "Title",
+              "resolver": "gql-module-promotions/src/resolvers/promotion.resolvers.ts:22",
+              "pointer": true,
+              "chain": [{ "kind": "none", "label": "Pointer only: no call, the URN is already known" }]
+            },
+            {
+              "path": "displayCard { label }",
+              "type": "Card",
+              "resolver": "gql-module-promotions/src/resolvers/promotion.resolvers.ts:34",
+              "warning": "Domain type points to a layout type.",
+              "chain": [{ "kind": "service", "label": "PromotionsService.getPromotion (primed)", "where": "promotions-service" }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SearchTitles",
+      "file": "apps/bff/persisted-operations/SearchTitles.graphql",
+      "fields": [
+        {
+          "path": "search",
+          "type": "[Title]",
+          "resolver": "gql-module-catalog/src/resolvers/query.resolvers.ts:9",
+          "chain": [
+            { "kind": "service", "label": "CatalogService.search (LRU cache)", "where": "catalog-service" },
+            { "kind": "retriever", "label": "searchTitles", "where": "catalog-service" },
+            { "kind": "call", "label": "GET /titles/search", "api": "catalog-api" }
+          ],
+          "children": [
+            {
+              "path": "name year",
+              "type": "scalars",
+              "resolver": "gql-module-catalog/src/resolvers/title.resolvers.ts:8,10",
+              "chain": [{ "kind": "service", "label": "CatalogService.getTitle (primed by search, no extra call)", "where": "catalog-service" }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TrendingRail",
+      "file": "apps/bff/persisted-operations/TrendingRail.graphql",
+      "fields": [
+        {
+          "path": "trending",
+          "type": "[Title]",
+          "resolver": "gql-module-catalog/src/resolvers/query.resolvers.ts:13",
+          "warning": "Resolver calls the API directly, skipping the service layer.",
+          "chain": [
+            { "kind": "client", "label": "createRestClient + loadConfig inside the resolver", "where": "gql-module-catalog" },
+            { "kind": "call", "label": "GET /titles/trending", "api": "catalog-api" }
+          ],
+          "children": [
+            {
+              "path": "name",
+              "type": "String",
+              "resolver": "gql-module-catalog/src/resolvers/title.resolvers.ts:8",
+              "chain": [
+                { "kind": "service", "label": "CatalogService.getTitle", "where": "catalog-service" },
+                { "kind": "call", "label": "GET /titles", "api": "catalog-api" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

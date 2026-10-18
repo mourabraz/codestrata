@@ -1,0 +1,4 @@
+"Every identifiable entity exposes its URN. Resolvers receive only the URN and load the rest."
+interface Node {
+  urn: URN!
+}

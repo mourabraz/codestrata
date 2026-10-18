@@ -1,0 +1,17 @@
+"Owned by the catalog module. This module only contributes the live availability field."
+type Title @key(fields: "urn") {
+  urn: URN!
+  availability(region: String): Availability
+}
+
+type Availability {
+  region: String!
+  available: Boolean!
+  price: Price
+  updatedAt: String!
+}
+
+type Price {
+  amount: Float!
+  currency: String!
+}

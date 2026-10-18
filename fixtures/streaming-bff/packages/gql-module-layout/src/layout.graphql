@@ -1,0 +1,28 @@
+"A screen (home, title page, ...) defined in the CMS as an ordered list of sections."
+type View implements Node {
+  urn: URN!
+  title: String!
+  sections: [Section!]!
+}
+
+union Section = CardGroup | Swimlane
+
+type CardGroup {
+  heading: String!
+  cards: [Card!]!
+}
+
+type Swimlane {
+  heading: String!
+  items: [Node!]!
+}
+
+type Card {
+  label: String!
+  imageUrl: String
+  target: Node!
+}
+
+type Query {
+  view(urn: URN!): View
+}

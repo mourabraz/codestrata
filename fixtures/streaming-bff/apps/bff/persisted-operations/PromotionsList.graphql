@@ -1,0 +1,14 @@
+query PromotionsList($region: String) {
+  promotions(region: $region) {
+    urn
+    headline
+    validUntil
+    titleName
+    title {
+      urn
+    }
+    displayCard {
+      label
+    }
+  }
+}

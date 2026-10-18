@@ -1,0 +1,742 @@
+{
+ "entries": [
+  {
+   "method": "POST",
+   "path": "/graphql",
+   "file": "apps/availability-subgraph/src/main.ts",
+   "line": 30,
+   "app": "apps/availability-subgraph"
+  },
+  {
+   "method": "POST",
+   "path": "/api",
+   "file": "apps/bff/src/main.ts",
+   "line": 18,
+   "app": "apps/bff"
+  },
+  {
+   "method": "POST",
+   "path": "/graphql",
+   "file": "apps/catalog-subgraph/src/main.ts",
+   "line": 24,
+   "app": "apps/catalog-subgraph"
+  }
+ ],
+ "operations": [
+  {
+   "name": "HomeView",
+   "file": "apps/bff/persisted-operations/HomeView.graphql",
+   "fields": [
+    {
+     "type": "Query",
+     "field": "view",
+     "path": "view"
+    },
+    {
+     "type": "View",
+     "field": "urn",
+     "path": "view.urn"
+    },
+    {
+     "type": "View",
+     "field": "title",
+     "path": "view.title"
+    },
+    {
+     "type": "View",
+     "field": "sections",
+     "path": "view.sections"
+    },
+    {
+     "type": "CardGroup",
+     "field": "heading",
+     "path": "view.sections.heading"
+    },
+    {
+     "type": "CardGroup",
+     "field": "cards",
+     "path": "view.sections.cards"
+    },
+    {
+     "type": "Card",
+     "field": "label",
+     "path": "view.sections.cards.label"
+    },
+    {
+     "type": "Card",
+     "field": "imageUrl",
+     "path": "view.sections.cards.imageUrl"
+    },
+    {
+     "type": "Card",
+     "field": "target",
+     "path": "view.sections.cards.target"
+    },
+    {
+     "type": "Node",
+     "field": "urn",
+     "path": "view.sections.cards.target.urn"
+    },
+    {
+     "type": "Title",
+     "field": "name",
+     "path": "view.sections.cards.target.name"
+    },
+    {
+     "type": "Title",
+     "field": "availability",
+     "path": "view.sections.cards.target.availability"
+    },
+    {
+     "type": "Availability",
+     "field": "available",
+     "path": "view.sections.cards.target.availability.available"
+    },
+    {
+     "type": "Availability",
+     "field": "price",
+     "path": "view.sections.cards.target.availability.price"
+    },
+    {
+     "type": "Price",
+     "field": "amount",
+     "path": "view.sections.cards.target.availability.price.amount"
+    },
+    {
+     "type": "Price",
+     "field": "currency",
+     "path": "view.sections.cards.target.availability.price.currency"
+    },
+    {
+     "type": "Promotion",
+     "field": "headline",
+     "path": "view.sections.cards.target.headline"
+    },
+    {
+     "type": "Swimlane",
+     "field": "heading",
+     "path": "view.sections.heading"
+    },
+    {
+     "type": "Swimlane",
+     "field": "items",
+     "path": "view.sections.items"
+    },
+    {
+     "type": "Node",
+     "field": "urn",
+     "path": "view.sections.items.urn"
+    },
+    {
+     "type": "Title",
+     "field": "name",
+     "path": "view.sections.items.name"
+    },
+    {
+     "type": "Title",
+     "field": "year",
+     "path": "view.sections.items.year"
+    }
+   ]
+  },
+  {
+   "name": "PromotionsList",
+   "file": "apps/bff/persisted-operations/PromotionsList.graphql",
+   "fields": [
+    {
+     "type": "Query",
+     "field": "promotions",
+     "path": "promotions"
+    },
+    {
+     "type": "Promotion",
+     "field": "urn",
+     "path": "promotions.urn"
+    },
+    {
+     "type": "Promotion",
+     "field": "headline",
+     "path": "promotions.headline"
+    },
+    {
+     "type": "Promotion",
+     "field": "validUntil",
+     "path": "promotions.validUntil"
+    },
+    {
+     "type": "Promotion",
+     "field": "titleName",
+     "path": "promotions.titleName"
+    },
+    {
+     "type": "Promotion",
+     "field": "title",
+     "path": "promotions.title"
+    },
+    {
+     "type": "Title",
+     "field": "urn",
+     "path": "promotions.title.urn"
+    },
+    {
+     "type": "Promotion",
+     "field": "displayCard",
+     "path": "promotions.displayCard"
+    },
+    {
+     "type": "Card",
+     "field": "label",
+     "path": "promotions.displayCard.label"
+    }
+   ]
+  },
+  {
+   "name": "SearchTitles",
+   "file": "apps/bff/persisted-operations/SearchTitles.graphql",
+   "fields": [
+    {
+     "type": "Query",
+     "field": "search",
+     "path": "search"
+    },
+    {
+     "type": "Title",
+     "field": "urn",
+     "path": "search.urn"
+    },
+    {
+     "type": "Title",
+     "field": "name",
+     "path": "search.name"
+    },
+    {
+     "type": "Title",
+     "field": "year",
+     "path": "search.year"
+    }
+   ]
+  },
+  {
+   "name": "TitleDetail",
+   "file": "apps/bff/persisted-operations/TitleDetail.graphql",
+   "fields": [
+    {
+     "type": "Query",
+     "field": "title",
+     "path": "title"
+    },
+    {
+     "type": "Title",
+     "field": "urn",
+     "path": "title.urn"
+    },
+    {
+     "type": "Title",
+     "field": "name",
+     "path": "title.name"
+    },
+    {
+     "type": "Title",
+     "field": "synopsis",
+     "path": "title.synopsis"
+    },
+    {
+     "type": "Title",
+     "field": "year",
+     "path": "title.year"
+    },
+    {
+     "type": "Title",
+     "field": "genres",
+     "path": "title.genres"
+    },
+    {
+     "type": "Title",
+     "field": "cast",
+     "path": "title.cast"
+    },
+    {
+     "type": "Person",
+     "field": "urn",
+     "path": "title.cast.urn"
+    },
+    {
+     "type": "Person",
+     "field": "name",
+     "path": "title.cast.name"
+    },
+    {
+     "type": "Title",
+     "field": "similar",
+     "path": "title.similar"
+    },
+    {
+     "type": "Title",
+     "field": "urn",
+     "path": "title.similar.urn"
+    },
+    {
+     "type": "Title",
+     "field": "name",
+     "path": "title.similar.name"
+    },
+    {
+     "type": "Title",
+     "field": "availability",
+     "path": "title.availability"
+    },
+    {
+     "type": "Availability",
+     "field": "available",
+     "path": "title.availability.available"
+    },
+    {
+     "type": "Availability",
+     "field": "updatedAt",
+     "path": "title.availability.updatedAt"
+    },
+    {
+     "type": "Availability",
+     "field": "price",
+     "path": "title.availability.price"
+    },
+    {
+     "type": "Price",
+     "field": "amount",
+     "path": "title.availability.price.amount"
+    },
+    {
+     "type": "Price",
+     "field": "currency",
+     "path": "title.availability.price.currency"
+    }
+   ]
+  },
+  {
+   "name": "TrendingRail",
+   "file": "apps/bff/persisted-operations/TrendingRail.graphql",
+   "fields": [
+    {
+     "type": "Query",
+     "field": "trending",
+     "path": "trending"
+    },
+    {
+     "type": "Title",
+     "field": "urn",
+     "path": "trending.urn"
+    },
+    {
+     "type": "Title",
+     "field": "name",
+     "path": "trending.name"
+    }
+   ]
+  }
+ ],
+ "resolverFields": [
+  {
+   "type": "Title",
+   "field": "__resolveReference",
+   "file": "packages/gql-module-availability/src/resolvers/index.ts",
+   "line": 5,
+   "endLine": 5
+  },
+  {
+   "type": "Title",
+   "field": "availability",
+   "file": "packages/gql-module-availability/src/resolvers/index.ts",
+   "line": 6,
+   "endLine": 7
+  },
+  {
+   "type": "Person",
+   "field": "__resolveReference",
+   "file": "packages/gql-module-catalog/src/resolvers/person.resolvers.ts",
+   "line": 6,
+   "endLine": 6
+  },
+  {
+   "type": "Person",
+   "field": "urn",
+   "file": "packages/gql-module-catalog/src/resolvers/person.resolvers.ts",
+   "line": 7,
+   "endLine": 7
+  },
+  {
+   "type": "Person",
+   "field": "name",
+   "file": "packages/gql-module-catalog/src/resolvers/person.resolvers.ts",
+   "line": 8,
+   "endLine": 8
+  },
+  {
+   "type": "Person",
+   "field": "birthYear",
+   "file": "packages/gql-module-catalog/src/resolvers/person.resolvers.ts",
+   "line": 9,
+   "endLine": 9
+  },
+  {
+   "type": "Person",
+   "field": "knownFor",
+   "file": "packages/gql-module-catalog/src/resolvers/person.resolvers.ts",
+   "line": 10,
+   "endLine": 11
+  },
+  {
+   "type": "Query",
+   "field": "title",
+   "file": "packages/gql-module-catalog/src/resolvers/query.resolvers.ts",
+   "line": 7,
+   "endLine": 7
+  },
+  {
+   "type": "Query",
+   "field": "search",
+   "file": "packages/gql-module-catalog/src/resolvers/query.resolvers.ts",
+   "line": 9,
+   "endLine": 10
+  },
+  {
+   "type": "Query",
+   "field": "trending",
+   "file": "packages/gql-module-catalog/src/resolvers/query.resolvers.ts",
+   "line": 13,
+   "endLine": 20
+  },
+  {
+   "type": "Query",
+   "field": "legacyTitles",
+   "file": "packages/gql-module-catalog/src/resolvers/query.resolvers.ts",
+   "line": 22,
+   "endLine": 22
+  },
+  {
+   "type": "Title",
+   "field": "__resolveReference",
+   "file": "packages/gql-module-catalog/src/resolvers/title.resolvers.ts",
+   "line": 6,
+   "endLine": 6
+  },
+  {
+   "type": "Title",
+   "field": "urn",
+   "file": "packages/gql-module-catalog/src/resolvers/title.resolvers.ts",
+   "line": 7,
+   "endLine": 7
+  },
+  {
+   "type": "Title",
+   "field": "name",
+   "file": "packages/gql-module-catalog/src/resolvers/title.resolvers.ts",
+   "line": 8,
+   "endLine": 8
+  },
+  {
+   "type": "Title",
+   "field": "synopsis",
+   "file": "packages/gql-module-catalog/src/resolvers/title.resolvers.ts",
+   "line": 9,
+   "endLine": 9
+  },
+  {
+   "type": "Title",
+   "field": "year",
+   "file": "packages/gql-module-catalog/src/resolvers/title.resolvers.ts",
+   "line": 10,
+   "endLine": 10
+  },
+  {
+   "type": "Title",
+   "field": "genres",
+   "file": "packages/gql-module-catalog/src/resolvers/title.resolvers.ts",
+   "line": 11,
+   "endLine": 11
+  },
+  {
+   "type": "Title",
+   "field": "cast",
+   "file": "packages/gql-module-catalog/src/resolvers/title.resolvers.ts",
+   "line": 12,
+   "endLine": 13
+  },
+  {
+   "type": "Title",
+   "field": "similar",
+   "file": "packages/gql-module-catalog/src/resolvers/title.resolvers.ts",
+   "line": 14,
+   "endLine": 15
+  },
+  {
+   "type": "Query",
+   "field": "view",
+   "file": "packages/gql-module-layout/src/resolvers/index.ts",
+   "line": 5,
+   "endLine": 5
+  },
+  {
+   "type": "CardGroup",
+   "field": "cards",
+   "file": "packages/gql-module-layout/src/resolvers/index.ts",
+   "line": 11,
+   "endLine": 11
+  },
+  {
+   "type": "Card",
+   "field": "target",
+   "file": "packages/gql-module-layout/src/resolvers/index.ts",
+   "line": 14,
+   "endLine": 14
+  },
+  {
+   "type": "Promotion",
+   "field": "__resolveReference",
+   "file": "packages/gql-module-promotions/src/resolvers/promotion.resolvers.ts",
+   "line": 16,
+   "endLine": 16
+  },
+  {
+   "type": "Promotion",
+   "field": "urn",
+   "file": "packages/gql-module-promotions/src/resolvers/promotion.resolvers.ts",
+   "line": 17,
+   "endLine": 17
+  },
+  {
+   "type": "Promotion",
+   "field": "headline",
+   "file": "packages/gql-module-promotions/src/resolvers/promotion.resolvers.ts",
+   "line": 18,
+   "endLine": 18
+  },
+  {
+   "type": "Promotion",
+   "field": "description",
+   "file": "packages/gql-module-promotions/src/resolvers/promotion.resolvers.ts",
+   "line": 19,
+   "endLine": 19
+  },
+  {
+   "type": "Promotion",
+   "field": "validUntil",
+   "file": "packages/gql-module-promotions/src/resolvers/promotion.resolvers.ts",
+   "line": 20,
+   "endLine": 20
+  },
+  {
+   "type": "Promotion",
+   "field": "title",
+   "file": "packages/gql-module-promotions/src/resolvers/promotion.resolvers.ts",
+   "line": 22,
+   "endLine": 25
+  },
+  {
+   "type": "Promotion",
+   "field": "titleName",
+   "file": "packages/gql-module-promotions/src/resolvers/promotion.resolvers.ts",
+   "line": 27,
+   "endLine": 32
+  },
+  {
+   "type": "Promotion",
+   "field": "displayCard",
+   "file": "packages/gql-module-promotions/src/resolvers/promotion.resolvers.ts",
+   "line": 34,
+   "endLine": 37
+  },
+  {
+   "type": "Query",
+   "field": "promotions",
+   "file": "packages/gql-module-promotions/src/resolvers/query.resolvers.ts",
+   "line": 5,
+   "endLine": 8
+  },
+  {
+   "type": "Query",
+   "field": "promotion",
+   "file": "packages/gql-module-promotions/src/resolvers/query.resolvers.ts",
+   "line": 10,
+   "endLine": 11
+  }
+ ],
+ "loaders": [
+  {
+   "owner": "packages/core-services/src/content-definition-service.ts#ContentDefinitionService",
+   "field": "loader",
+   "file": "packages/core-services/src/content-definition-service.ts",
+   "line": 20,
+   "targets": [
+    "packages/core-services/src/content-definition-service.ts#ContentDefinitionService.loadView"
+   ],
+   "users": [
+    "packages/core-services/src/content-definition-service.ts#ContentDefinitionService.getView"
+   ],
+   "exits": []
+  },
+  {
+   "owner": "packages/availability-service/src/availability-service.ts#AvailabilityService",
+   "field": "loader",
+   "file": "packages/availability-service/src/availability-service.ts",
+   "line": 59,
+   "targets": [
+    "packages/availability-service/src/availability-service.ts#getAvailability",
+    "packages/availability-service/src/availability-service.ts#keyOf",
+    "packages/availability-service/src/availability-service.ts#mapAvailability"
+   ],
+   "users": [
+    "packages/availability-service/src/availability-service.ts#AvailabilityService.getForTitle"
+   ],
+   "exits": []
+  },
+  {
+   "owner": "packages/catalog-service/src/catalog-service.ts#CatalogService",
+   "field": "titleLoader",
+   "file": "packages/catalog-service/src/catalog-service.ts",
+   "line": 15,
+   "targets": [
+    "packages/catalog-service/src/retrievers.ts#getTitlesByIds"
+   ],
+   "users": [
+    "packages/catalog-service/src/catalog-service.ts#CatalogService.getTitle"
+   ],
+   "exits": []
+  },
+  {
+   "owner": "packages/people-service/src/people-service.ts#PeopleService",
+   "field": "loader",
+   "file": "packages/people-service/src/people-service.ts",
+   "line": 29,
+   "targets": [
+    "packages/people-service/src/people-service.ts#mapPerson"
+   ],
+   "users": [
+    "packages/people-service/src/people-service.ts#PeopleService.getPerson"
+   ],
+   "exits": [
+    5
+   ]
+  },
+  {
+   "owner": "packages/promotions-service/src/promotions-service.ts#PromotionsService",
+   "field": "loader",
+   "file": "packages/promotions-service/src/promotions-service.ts",
+   "line": 21,
+   "targets": [
+    "packages/promotions-service/src/retrievers.ts#getPromotionsByIds"
+   ],
+   "users": [
+    "packages/promotions-service/src/promotions-service.ts#PromotionsService.getPromotion"
+   ],
+   "exits": []
+  }
+ ],
+ "exits": [
+  {
+   "from": "packages/core-services/src/cms/cms-retrievers.ts#getCmsDocumentByUid",
+   "via": "call",
+   "kind": "rest",
+   "method": "GET",
+   "path": "/documents",
+   "client": "cms-api",
+   "clientVia": "heuristic: caller service → clients key → createClients name",
+   "file": "packages/core-services/src/cms/cms-retrievers.ts",
+   "line": 14
+  },
+  {
+   "from": "packages/availability-service/src/availability-service.ts#getAvailability",
+   "via": "call",
+   "kind": "rest",
+   "method": "GET",
+   "path": "/live/availability",
+   "client": "availability-api",
+   "clientVia": "heuristic: caller service → clients key → createClients name",
+   "file": "packages/availability-service/src/availability-service.ts",
+   "line": 33
+  },
+  {
+   "from": "packages/catalog-service/src/retrievers.ts#getTitlesByIds",
+   "via": "call",
+   "kind": "rest",
+   "method": "GET",
+   "path": "/titles",
+   "client": "catalog-api",
+   "clientVia": "heuristic: caller service → clients key → createClients name",
+   "file": "packages/catalog-service/src/retrievers.ts",
+   "line": 5
+  },
+  {
+   "from": "packages/catalog-service/src/retrievers.ts#searchTitles",
+   "via": "call",
+   "kind": "rest",
+   "method": "GET",
+   "path": "/titles/search",
+   "client": "catalog-api",
+   "clientVia": "heuristic: caller service → clients key → createClients name",
+   "file": "packages/catalog-service/src/retrievers.ts",
+   "line": 10
+  },
+  {
+   "from": "packages/catalog-service/src/retrievers.ts#getTrendingTitleIds",
+   "via": "call",
+   "kind": "rest",
+   "method": "GET",
+   "path": "/titles/trending",
+   "client": null,
+   "clientVia": "heuristic: caller service → clients key → createClients name",
+   "file": "packages/catalog-service/src/retrievers.ts",
+   "line": 15
+  },
+  {
+   "from": "packages/people-service/src/people-service.ts#PeopleService",
+   "via": "loader",
+   "kind": "graphql",
+   "method": "query",
+   "path": "PeopleByIds",
+   "client": "people-api",
+   "clientVia": "heuristic: service field → clients key → createClients name",
+   "file": "packages/people-service/src/people-service.ts",
+   "line": 30
+  },
+  {
+   "from": "packages/gql-module-catalog/src/resolvers/query.resolvers.ts#queryResolvers",
+   "via": "call",
+   "kind": "rest",
+   "method": "GET",
+   "path": "/titles/trending",
+   "client": "catalog-api",
+   "clientVia": "local client",
+   "file": "packages/gql-module-catalog/src/resolvers/query.resolvers.ts",
+   "line": 16
+  },
+  {
+   "from": "packages/promotions-service/src/retrievers.ts#getActivePromotions",
+   "via": "call",
+   "kind": "rest",
+   "method": "GET",
+   "path": "/v2/promotions",
+   "client": "promotions-api",
+   "clientVia": "heuristic: caller service → clients key → createClients name",
+   "file": "packages/promotions-service/src/retrievers.ts",
+   "line": 5
+  },
+  {
+   "from": "packages/promotions-service/src/retrievers.ts#getPromotionsByIds",
+   "via": "call",
+   "kind": "rest",
+   "method": "GET",
+   "path": "/v2/promotions",
+   "client": "promotions-api",
+   "clientVia": "heuristic: caller service → clients key → createClients name",
+   "file": "packages/promotions-service/src/retrievers.ts",
+   "line": 16
+  }
+ ],
+ "clientNames": {
+  "availabilityApi": "availability-api",
+  "cmsApi": "cms-api",
+  "catalogApi": "catalog-api",
+  "peopleApi": "people-api",
+  "promotionsApi": "promotions-api"
+ }
+}

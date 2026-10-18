@@ -1,0 +1,26 @@
+{
+  "name": "spike-visualization",
+  "private": true,
+  "type": "module",
+  "description": "Throwaway spike: compares graph renderers for the codestrata dashboard. Not part of the app.",
+  "scripts": {
+    "layout": "node scripts/layout.ts",
+    "dev": "vite --host 127.0.0.1",
+    "bench": "node scripts/bench.ts"
+  },
+  "dependencies": {
+    "cytoscape": "3.34.4",
+    "elkjs": "0.12.0",
+    "graphology": "0.26.0",
+    "graphology-layout-forceatlas2": "0.10.1",
+    "sigma": "4.0.3",
+    "sigma3": "npm:sigma@3.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "graphology-types": "^0.24.8",
+    "playwright": "1.64.1",
+    "typescript": "6.0.3",
+    "vite": "8.3.4"
+  }
+}

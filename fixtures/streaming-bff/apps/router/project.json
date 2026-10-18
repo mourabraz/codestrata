@@ -1,0 +1,13 @@
+{
+  "name": "router",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "tags": ["type:router"],
+  "implicitDependencies": ["@streaming/catalog-subgraph", "@streaming/availability-subgraph"],
+  "targets": {
+    "compose": {
+      "command": "pnpm gen:supergraph",
+      "options": { "cwd": "{workspaceRoot}" }
+    }
+  }
+}

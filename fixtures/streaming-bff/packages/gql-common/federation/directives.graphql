@@ -1,0 +1,9 @@
+# Federation directive definitions for the monolith schema only.
+# Subgraphs get them from @link (see link.graphql) and codegen injects its own.
+scalar _FieldSet
+
+directive @key(fields: _FieldSet!, resolvable: Boolean = true) repeatable on OBJECT | INTERFACE
+directive @external on FIELD_DEFINITION | OBJECT
+directive @shareable repeatable on OBJECT | FIELD_DEFINITION
+directive @requires(fields: _FieldSet!) on FIELD_DEFINITION
+directive @provides(fields: _FieldSet!) on FIELD_DEFINITION

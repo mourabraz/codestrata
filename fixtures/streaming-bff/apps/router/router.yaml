@@ -1,0 +1,10 @@
+supergraph:
+  listen: 0.0.0.0:4200
+  introspection: false
+headers:
+  all:
+    request:
+      - propagate:
+          matching: "^x-(brand|region|channel)$"
+      - propagate:
+          named: accept-language

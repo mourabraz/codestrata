@@ -1,0 +1,44 @@
+query HomeView($urn: URN!, $region: String!) {
+  view(urn: $urn) {
+    urn
+    title
+    sections {
+      __typename
+      ... on CardGroup {
+        heading
+        cards {
+          label
+          imageUrl
+          target {
+            __typename
+            urn
+            ... on Title {
+              name
+              availability(region: $region) {
+                available
+                price {
+                  amount
+                  currency
+                }
+              }
+            }
+            ... on Promotion {
+              headline
+            }
+          }
+        }
+      }
+      ... on Swimlane {
+        heading
+        items {
+          __typename
+          urn
+          ... on Title {
+            name
+            year
+          }
+        }
+      }
+    }
+  }
+}

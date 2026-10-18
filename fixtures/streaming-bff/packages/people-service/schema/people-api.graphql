@@ -1,0 +1,19 @@
+# Snapshot of the external People API schema (owned by another team).
+# Used only by codegen to type the queries in src/operations.ts.
+type Query {
+  people(ids: [ID!]!): [Person!]!
+  person(id: ID!): Person
+}
+
+type Person {
+  id: ID!
+  displayName: String!
+  birthYear: Int
+  photoUrl: String
+  credits: [Credit!]!
+}
+
+type Credit {
+  titleId: ID!
+  role: String!
+}

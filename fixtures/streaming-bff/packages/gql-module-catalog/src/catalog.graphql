@@ -1,0 +1,23 @@
+type Title implements Node @key(fields: "urn") {
+  urn: URN!
+  name: String!
+  synopsis: String
+  year: Int
+  genres: [String!]!
+  cast: [Person!]!
+  similar: [Title!]!
+}
+
+type Person implements Node @key(fields: "urn") {
+  urn: URN!
+  name: String!
+  birthYear: Int
+  knownFor: [Title!]!
+}
+
+type Query {
+  title(urn: URN!): Title
+  search(text: String!, limit: Int = 20): [Title!]!
+  trending: [Title!]!
+  legacyTitles(ids: [String!]!): [Title!]! @deprecated(reason: "Use title(urn:) instead")
+}

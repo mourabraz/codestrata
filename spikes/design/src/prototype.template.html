@@ -1,0 +1,1113 @@
+<title>codestrata views</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: instrument-panel chrome around one working canvas; strata (layers) are the signature motif. */
+  :root {
+    --bg: #f3f4f6;
+    --surface: #ffffff;
+    --surface-2: #eceff2;
+    --ink: #15202a;
+    --muted: #5a6672;
+    --faint: #8a95a0;
+    --line: #d9dee3;
+    --accent: #0d6b70;
+    --accent-ink: #ffffff;
+    --accent-soft: #d7ecec;
+    --warn: #a86a12;
+    --warn-soft: #f6e7cc;
+    --crit: #b83a26;
+    --crit-soft: #f6dcd6;
+    --band-a: #e8edf0;
+    --band-b: #f6f8f9;
+    --h0: #cfe6e3;
+    --h1: #e5e2b9;
+    --h2: #f0c99a;
+    --h3: #eaa190;
+    --hn: #e3e7ea;
+    --api-1: #2f6db5;
+    --api-2: #0d6b70;
+    --api-3: #8a4fb0;
+    --api-4: #b05d1f;
+    --api-5: #4d7a2a;
+    --api-6: #b0375e;
+    --font-ui: 'Schibsted Grotesk', 'Segoe UI', system-ui, sans-serif;
+    --font-code: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1317; --surface: #151c21; --surface-2: #1c252b; --ink: #e5ebee; --muted: #9aa7b1; --faint: #6f7d88;
+      --line: #27333b; --accent: #4fb6bb; --accent-ink: #062224; --accent-soft: #15383a; --warn: #e2a948; --warn-soft: #3a2c12;
+      --crit: #f07a62; --crit-soft: #3e1d17; --band-a: #141b20; --band-b: #11171b; --h0: #1d4744; --h1: #4a4724; --h2: #5c3f20;
+      --h3: #6a2e24; --hn: #202a30; --api-1: #6ea6e8; --api-2: #4fb6bb; --api-3: #c08ae0; --api-4: #e59a5c; --api-5: #8fc06a; --api-6: #e7799b;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1317; --surface: #151c21; --surface-2: #1c252b; --ink: #e5ebee; --muted: #9aa7b1; --faint: #6f7d88;
+    --line: #27333b; --accent: #4fb6bb; --accent-ink: #062224; --accent-soft: #15383a; --warn: #e2a948; --warn-soft: #3a2c12;
+    --crit: #f07a62; --crit-soft: #3e1d17; --band-a: #141b20; --band-b: #11171b; --h0: #1d4744; --h1: #4a4724; --h2: #5c3f20;
+    --h3: #6a2e24; --hn: #202a30; --api-1: #6ea6e8; --api-2: #4fb6bb; --api-3: #c08ae0; --api-4: #e59a5c; --api-5: #8fc06a; --api-6: #e7799b;
+    color-scheme: dark;
+  }
+
+  html, body { height: 100%; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-ui); font-size: 14px; line-height: 1.45; }
+  button, input, select { font: inherit; color: inherit; }
+  code, .code { font-family: var(--font-code); font-size: 12.5px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .app { display: grid; grid-template-columns: 196px minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); height: 100%; }
+  header {
+    grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+    padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    background: var(--surface); border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -0.01em; font-size: 16px; }
+  .brand svg { display: block; }
+  .brand small { font-weight: 500; color: var(--muted); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .spacer { flex: 1; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface-2); }
+  .seg button { border: 0; background: transparent; padding: 6px 12px; cursor: pointer; color: var(--muted); white-space: nowrap; }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); font-weight: 600; box-shadow: inset 0 -2px 0 var(--accent); }
+  .toggle { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); cursor: pointer; user-select: none; white-space: nowrap; }
+  .toggle input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+  nav { border-right: 1px solid var(--line); background: var(--surface); padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; overflow: auto; }
+  nav .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--faint); padding: 6px 10px 8px; }
+  nav button { display: grid; grid-template-columns: 22px 1fr; align-items: center; gap: 8px; text-align: left; border: 0; background: transparent; padding: 8px 10px; border-radius: 8px; cursor: pointer; color: var(--muted); }
+  nav button:hover { background: var(--surface-2); color: var(--ink); }
+  nav button[aria-current="page"] { background: var(--accent-soft); color: var(--ink); font-weight: 600; }
+  nav button span.q { grid-column: 2; font-size: 11.5px; color: var(--faint); font-weight: 400; line-height: 1.3; }
+  nav .foot { margin-top: auto; font-size: 11.5px; color: var(--faint); padding: 12px 10px 4px; line-height: 1.4; }
+
+  main { overflow: auto; min-width: 0; padding-block: 18px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .view-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 14px; }
+  .view-head h1 { font-size: 20px; margin: 0; letter-spacing: -0.015em; text-wrap: balance; }
+  .view-head p { margin: 0; color: var(--muted); max-width: 70ch; }
+
+  .pill { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 999px; font-size: 11.5px; border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); white-space: nowrap; }
+  .pill.crit { background: var(--crit-soft); color: var(--crit); border-color: transparent; }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+  .pill.ok { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+  .num { font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+  .faint { color: var(--faint); }
+  .linkish { cursor: pointer; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+  .linkish:hover { text-decoration-color: var(--accent); color: var(--accent); }
+  .empty { padding: 28px; border: 1px dashed var(--line); border-radius: 10px; color: var(--muted); background: var(--surface); }
+
+  /* Layers */
+  .strata-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  .strata { position: relative; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+  .stratum { display: grid; grid-template-columns: 92px minmax(0, 1fr); border-top: 1px solid var(--line); }
+  .stratum:first-child { border-top: 0; }
+  .stratum:nth-child(odd) { background: var(--band-a); }
+  .stratum:nth-child(even) { background: var(--band-b); }
+  .stratum .lv { padding: 12px 10px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
+  .stratum .lv b { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .stratum .lv span { font-size: 11.5px; color: var(--faint); }
+  .tiles { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px; position: relative; z-index: 1; }
+  .tile { position: relative; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 10px; cursor: pointer; min-width: 0; text-align: left; display: flex; flex-direction: column; gap: 4px; transition: opacity .15s, border-color .15s; }
+  .tile:hover, .tile.sel { border-color: var(--accent); }
+  .tile.sel { box-shadow: 0 0 0 2px var(--accent-soft); }
+  .tile.dim { opacity: .35; }
+  .tile .nm { font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
+  .tile .meta { display: flex; gap: 8px; flex-wrap: wrap; font-size: 11.5px; color: var(--muted); }
+  .tile .bar { height: 3px; border-radius: 3px; background: var(--accent); opacity: .5; }
+  .tile .flag { position: absolute; top: -6px; right: -6px; width: 14px; height: 14px; border-radius: 50%; background: var(--crit); border: 2px solid var(--surface); }
+  .edges { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: visible; }
+  .edges path { fill: none; }
+  .edges .down { stroke: var(--accent); stroke-width: 1.6; }
+  .edges .up { stroke: var(--muted); stroke-width: 1.4; stroke-dasharray: 4 3; }
+  .edges .viol { stroke: var(--crit); stroke-width: 2; }
+  .edges .test { stroke: var(--faint); stroke-width: 1; stroke-dasharray: 2 3; }
+  .side { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 14px; display: flex; flex-direction: column; gap: 12px; position: sticky; top: 0; }
+  .side h2 { font-size: 15px; margin: 0; overflow-wrap: anywhere; }
+  .side h3 { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint); margin: 0 0 4px; }
+  .side ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+  .side li { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+  .side li span:first-child { overflow-wrap: anywhere; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 10px; }
+  .legend i { display: inline-block; width: 18px; height: 0; border-top: 2px solid; vertical-align: middle; margin-right: 6px; }
+
+  /* Usage */
+  .usage { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .finder { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); display: flex; flex-direction: column; max-height: calc(100vh - 150px); min-height: 360px; position: sticky; top: 0; }
+  .finder .top { padding: 12px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+  .finder input[type=search] { width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3px 10px; font-size: 12px; cursor: pointer; color: var(--muted); }
+  .chips button[aria-pressed="true"] { border-color: var(--accent); color: var(--ink); background: var(--accent-soft); }
+  .results { overflow: auto; flex: 1; }
+  .results button { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: transparent; padding: 8px 12px; cursor: pointer; }
+  .results button:hover { background: var(--surface-2); }
+  .results button[aria-current="true"] { background: var(--accent-soft); }
+  .results .sn { font-family: var(--font-code); font-size: 12.5px; overflow-wrap: anywhere; }
+  .results .sp { grid-column: 1; font-size: 11.5px; color: var(--faint); overflow-wrap: anywhere; }
+  .results .sc { grid-row: 1 / span 2; grid-column: 2; align-self: center; text-align: right; font-size: 11.5px; }
+  .results .more { padding: 10px 12px; color: var(--faint); font-size: 12px; }
+  .crumbs { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 10px; font-size: 12px; color: var(--faint); }
+  .crumbs button { border: 0; background: none; padding: 0; cursor: pointer; color: var(--muted); font-family: var(--font-code); font-size: 12px; }
+  .crumbs button:hover { color: var(--accent); }
+  .trio { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 300px) minmax(0, 1fr); gap: 14px; align-items: start; }
+  .col { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); min-width: 0; }
+  .col > h3 { margin: 0; padding: 10px 12px; border-bottom: 1px solid var(--line); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+  .group { border-bottom: 1px solid var(--line); }
+  .group:last-child { border-bottom: 0; }
+  .group summary { list-style: none; cursor: pointer; padding: 8px 12px; display: flex; justify-content: space-between; gap: 8px; font-weight: 600; font-size: 13px; }
+  .group summary::-webkit-details-marker { display: none; }
+  .group summary::before { content: '▸'; color: var(--faint); margin-right: 6px; transition: transform .15s; display: inline-block; }
+  .group[open] summary::before { transform: rotate(90deg); }
+  .group summary .gname { flex: 1; overflow-wrap: anywhere; }
+  .refs { list-style: none; margin: 0; padding: 0 12px 10px 28px; display: flex; flex-direction: column; gap: 4px; }
+  .refs li { font-size: 12.5px; display: flex; flex-direction: column; }
+  .refs li .w { font-family: var(--font-code); font-size: 12px; overflow-wrap: anywhere; }
+  .refs li .f { font-size: 11.5px; color: var(--faint); overflow-wrap: anywhere; }
+  .hidden-note { padding: 10px 12px; font-size: 12px; color: var(--faint); border-top: 1px dashed var(--line); }
+  .card { border: 1px solid var(--accent); border-radius: 12px; background: var(--surface); padding: 14px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 0 0 3px var(--accent-soft); }
+  .card .kind { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 600; }
+  .card .name { font-family: var(--font-code); font-size: 15px; font-weight: 500; overflow-wrap: anywhere; }
+  .card .where { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .stat { background: var(--surface-2); border-radius: 8px; padding: 8px; }
+  .stat b { display: block; font-size: 20px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .stat span { font-size: 11px; color: var(--muted); }
+  .stat.dim b { color: var(--faint); }
+  .callout { border-radius: 8px; padding: 10px 12px; font-size: 13px; }
+  .callout.crit { background: var(--crit-soft); color: var(--crit); }
+  .callout.warn { background: var(--warn-soft); color: var(--warn); }
+  .callout.info { background: var(--surface-2); color: var(--muted); }
+  .callout b { display: block; margin-bottom: 2px; }
+
+  /* Trace */
+  .ops { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .ops button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-family: var(--font-code); font-size: 12.5px; }
+  .ops button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+  .apis { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; font-size: 13px; color: var(--muted); }
+  .api { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border-radius: 6px; font-size: 12px; font-family: var(--font-code); color: #fff; }
+  .trace { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow-x: auto; }
+  .trace table { border-collapse: collapse; width: 100%; min-width: 860px; }
+  .trace th { text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint); font-weight: 600; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+  .trace td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .trace tr:last-child td { border-bottom: 0; }
+  .trace .field { font-family: var(--font-code); font-size: 12.5px; white-space: nowrap; }
+  .trace .field .tw { color: var(--faint); }
+  .trace .type { color: var(--faint); font-size: 11.5px; display: block; }
+  .trace .res { font-family: var(--font-code); font-size: 11.5px; color: var(--muted); overflow-wrap: anywhere; max-width: 280px; }
+  .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .step { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; font-size: 12px; background: var(--surface-2); }
+  .step small { color: var(--faint); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .step.cross { border-color: var(--crit); }
+  .arrow { color: var(--faint); }
+  .trace .warnrow td { background: var(--crit-soft); color: var(--crit); font-size: 12.5px; padding-top: 6px; padding-bottom: 6px; }
+  .trace .note td { color: var(--muted); font-size: 12.5px; background: var(--surface-2); }
+
+  /* Matrix */
+  .matrix { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow: auto; padding: 12px; }
+  .matrix svg text { fill: var(--muted); font-size: 11px; font-family: var(--font-ui); }
+  .matrix svg text.hl { fill: var(--ink); font-weight: 600; }
+  .matrix .cell { stroke: var(--surface); stroke-width: 1; }
+  .matrix .diag { fill: var(--surface-2); }
+  .matrix .below { fill: var(--crit); }
+  .matrix .viol { stroke: var(--crit); stroke-width: 2; }
+  .tip { position: fixed; z-index: 30; pointer-events: none; background: var(--ink); color: var(--bg); padding: 6px 9px; border-radius: 6px; font-size: 12px; max-width: 320px; }
+
+  /* Areas */
+  .areas { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 10px; }
+  .areas svg { display: block; width: 100%; }
+  .areas rect.leaf { stroke: var(--surface); stroke-width: 1; cursor: pointer; }
+  .areas rect.grp { fill: none; stroke: var(--line); }
+  .areas text { font-size: 11px; fill: var(--ink); pointer-events: none; }
+  .areas text.g { font-weight: 600; fill: var(--muted); font-size: 11.5px; }
+  .h0 { fill: var(--h0); } .h1 { fill: var(--h1); } .h2 { fill: var(--h2); } .h3 { fill: var(--h3); } .hn { fill: var(--hn); }
+  .areas rect.t { fill: var(--surface-2); stroke-dasharray: 2 2; stroke: var(--faint); }
+  .scale { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted); margin-top: 10px; align-items: center; }
+  .scale i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: middle; margin-right: 6px; }
+
+  /* Request flow (inside Usage) */
+  .flowsec { margin-top: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .flowsec > header { all: unset; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .flowsec > header h2 { margin: 0; font-size: 15px; }
+  .flowsec > header p { margin: 0; color: var(--muted); font-size: 12.5px; flex: 1 1 260px; }
+  .flowbody { padding: 14px; overflow-x: auto; }
+  .flow3 { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(150px, 210px) minmax(0, 1.2fr); gap: 0; align-items: stretch; min-width: 760px; }
+  .zone { display: flex; flex-direction: column; gap: 8px; padding: 4px 14px; }
+  .zone h4 { margin: 0 0 2px; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint); }
+  .zone.mid { border-left: 1px dashed var(--line); border-right: 1px dashed var(--line); justify-content: center; align-items: center; text-align: center; background: var(--band-b); }
+  .zone.mid .name { font-family: var(--font-code); font-weight: 500; overflow-wrap: anywhere; }
+  .opgroup { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .opgroup summary { list-style: none; cursor: pointer; padding: 7px 10px; display: flex; gap: 8px; align-items: center; background: var(--surface-2); font-size: 13px; }
+  .opgroup summary::-webkit-details-marker { display: none; }
+  .opgroup summary::before { content: '▸'; color: var(--faint); transition: transform .15s; }
+  .opgroup[open] summary::before { transform: rotate(90deg); }
+  .opgroup summary .gname { flex: 1; font-family: var(--font-code); font-size: 12.5px; overflow-wrap: anywhere; }
+  .route { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; width: 100%; text-align: left; border: 0; border-top: 1px solid var(--line); background: var(--surface); padding: 7px 10px; cursor: pointer; font-size: 12.5px; }
+  .route:hover { background: var(--accent-soft); }
+  .route[aria-pressed="true"] { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+  .route .rl { font-family: var(--font-code); overflow-wrap: anywhere; }
+  .route .rs { grid-column: 1; font-size: 11.5px; color: var(--faint); overflow-wrap: anywhere; }
+  .route .rt { grid-row: 1 / span 2; grid-column: 2; align-self: center; }
+  .exitroute { border: 1px solid var(--line); border-radius: 8px; }
+  .exitroute .rl { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-family: var(--font-ui); }
+  .helpers { font-size: 12px; color: var(--faint); }
+  .via-code { color: var(--muted); }
+  .flowlegend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); padding: 0 14px 12px; }
+  .flowlegend i { display: inline-block; width: 22px; vertical-align: middle; margin-right: 6px; border-top: 2px solid var(--muted); }
+  .flowlegend i.inf { border-top-style: dashed; border-color: var(--warn); }
+  .path { list-style: none; margin: 0; padding: 0; max-width: 760px; }
+  .path li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 0 12px; position: relative; padding-bottom: 14px; }
+  .path li::before { content: ''; position: absolute; left: 16px; top: 28px; bottom: 0; border-left: 2px solid var(--line); }
+  .path li.inf::before { border-left-style: dashed; border-color: var(--warn); }
+  .path li:last-child::before { display: none; }
+  .path .dot { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 600; background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); }
+  .path li.sel .dot { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .path li.exit .dot { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .path .what { font-family: var(--font-code); font-size: 13px; padding-top: 5px; overflow-wrap: anywhere; }
+  .path .what small { display: block; font-family: var(--font-ui); color: var(--faint); font-size: 11.5px; margin-top: 2px; }
+  .path .tag { padding-top: 6px; }
+  .seq svg text { font-family: var(--font-ui); font-size: 11.5px; fill: var(--ink); }
+  .seq svg text.code { font-family: var(--font-code); font-size: 11px; }
+  .seq svg .head { fill: var(--surface-2); stroke: var(--line); }
+  .seq svg .head.sel { fill: var(--accent-soft); stroke: var(--accent); }
+  .seq svg .head.api { fill: var(--ink); stroke: var(--ink); }
+  .seq svg text.apitxt { fill: var(--bg); }
+  .seq svg .life { stroke: var(--line); stroke-dasharray: 3 4; }
+  .seq svg .msg { stroke: var(--muted); stroke-width: 1.4; fill: none; }
+  .seq svg .msg.inf { stroke: var(--warn); stroke-dasharray: 5 4; }
+  .seq svg .ret { stroke: var(--faint); stroke-width: 1; stroke-dasharray: 2 3; fill: none; }
+  .seq svg .act { fill: var(--accent-soft); stroke: var(--accent); }
+
+  @media (max-width: 1100px) {
+    .strata-wrap, .usage { grid-template-columns: minmax(0, 1fr); }
+    .side, .finder { position: static; max-height: none; }
+    .trio { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .app { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); }
+    nav { flex-direction: row; border-right: 0; border-bottom: 1px solid var(--line); padding: 6px 8px; }
+    nav .label, nav .foot, nav button span.q { display: none; }
+    nav button { grid-template-columns: 18px auto; white-space: nowrap; }
+    .stratum { grid-template-columns: minmax(0, 1fr); }
+    .stratum .lv { border-right: 0; flex-direction: row; gap: 8px; padding: 8px 12px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="app">
+  <header>
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="1" y="2" width="20" height="4" rx="1.5" fill="var(--accent)"/><rect x="3" y="9" width="16" height="4" rx="1.5" fill="var(--accent)" opacity=".65"/><rect x="5" y="16" width="12" height="4" rx="1.5" fill="var(--accent)" opacity=".35"/></svg>
+      codestrata <small>design prototype</small>
+    </div>
+    <div class="seg" role="group" aria-label="Dataset" id="datasets"></div>
+    <span class="spacer"></span>
+    <label class="toggle" for="t-tests"><input type="checkbox" id="t-tests"> Show tests</label>
+    <label class="toggle" for="t-gen"><input type="checkbox" id="t-gen"> Show generated files</label>
+  </header>
+  <nav aria-label="Views" id="nav">
+    <div class="label">Views</div>
+  </nav>
+  <main id="view"></main>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script type="application/json" id="data">__DATA__</script>
+<script>
+(() => {
+  const DATA = JSON.parse(document.getElementById('data').textContent);
+  const $ = (sel, el = document) => el.querySelector(sel);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const fmt = (n) => n.toLocaleString('en-US');
+  const short = (name) => name.replace(/^@[^/]+\//, '');
+
+  const VIEWS = [
+    { id: 'layers', name: 'Layers', q: 'How is the monorepo organised?', icon: '<path d="M2 4h14M4 9h10M6 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' },
+    { id: 'usage', name: 'Usage', q: 'Who uses this, and what does it use?', icon: '<circle cx="9" cy="9" r="3" fill="currentColor"/><path d="M1 5h4M1 13h4M13 5h4M13 13h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' },
+    { id: 'trace', name: 'Trace', q: 'Which APIs does this query reach?', icon: '<path d="M3 3v12M3 6h5M8 6v6M8 12h7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>' },
+    { id: 'matrix', name: 'Matrix', q: 'Where is the coupling?', icon: '<path d="M2 2h5v5H2zM11 2h5v5h-5zM2 11h5v5H2zM11 11h5v5h-5z" fill="currentColor" opacity=".8"/>' },
+    { id: 'areas', name: 'Areas', q: 'Where is the weight, and the dead code?', icon: '<path d="M2 2h9v8H2zM12 2h4v5h-4zM12 8h4v8h-4zM2 11h9v5H2z" fill="currentColor" opacity=".8"/>' },
+  ];
+  const LABEL = { fixture: 'streaming-bff · fixture', hive: 'graphql-hive/console' };
+
+  const state = { ds: 0, view: 'layers', tests: false, generated: false, project: null, hoverProject: null, symbol: null, trail: [], filter: 'attention', query: '', op: 0, areaRoot: null, flowMode: 'flow', upRoute: 0, downRoute: 0 };
+  try { const saved = JSON.parse(localStorage.getItem('codestrata-proto') || '{}'); Object.assign(state, { view: saved.view ?? state.view, ds: saved.ds ?? state.ds }); } catch {}
+  const remember = () => { try { localStorage.setItem('codestrata-proto', JSON.stringify({ view: state.view, ds: state.ds })); } catch {} };
+
+  const D = () => DATA.datasets[state.ds];
+
+  // ---------- derived data ----------
+  function derive(d) {
+    if (d._) return d._;
+    const testProject = d.projects.map((p) => p.tags.includes('type:test'));
+    const fileKind = d.files.map((f) => f.k);
+    const sym = d.symbols.map((s, i) => {
+      const file = d.files[s.f] ?? { p: '?', j: 0, k: 's' };
+      return { ...s, i, file, project: file.j };
+    });
+    d._ = { testProject, fileKind, sym };
+    return d._;
+  }
+  function usesOf(s) {
+    const d = D();
+    return s.u.filter((u) => u[0] >= 0 && (state.generated || d.files[u[0]].k !== 'g'));
+  }
+  function statusOf(s) {
+    const prod = usesOf(s).length;
+    if (prod > 0) return 'used';
+    return s.t.length > 0 ? 'tested-only' : 'unused';
+  }
+  function isCandidate(s) {
+    const { testProject } = derive(D());
+    return !s.g && s.file.k !== 't' && !testProject[s.project] && (state.generated || s.file.k !== 'g');
+  }
+  function publishedLibrary(s) {
+    const p = D().projects[s.project];
+    return state.ds === 1 && /^packages\/libraries\//.test(p.dir);
+  }
+
+  // ---------- chrome ----------
+  function renderChrome() {
+    $('#datasets').innerHTML = DATA.datasets.map((d, i) => `<button type="button" data-ds="${i}" aria-pressed="${i === state.ds}">${esc(LABEL[d.name] ?? d.name)}</button>`).join('');
+    const nav = $('#nav');
+    nav.innerHTML = '<div class="label">Views</div>' + VIEWS.map((v) => `<button type="button" data-view="${v.id}" ${v.id === state.view ? 'aria-current="page"' : ''}><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">${v.icon}</svg><span>${v.name}</span><span class="q">${v.q}</span></button>`).join('') +
+      `<div class="foot">Real data: the codestrata fixture and graphql-hive/console @ 335bf6a, extracted ${esc(DATA.generatedAt)}. Prototype only: layouts and copy will change.</div>`;
+    $('#t-tests').checked = state.tests;
+    $('#t-gen').checked = state.generated;
+  }
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-ds],[data-view]');
+    if (!t) return;
+    if (t.dataset.ds !== undefined) { state.ds = +t.dataset.ds; state.project = null; state.symbol = null; state.trail = []; state.areaRoot = null; }
+    if (t.dataset.view) state.view = t.dataset.view;
+    remember();
+    render();
+  });
+  $('#t-tests').addEventListener('change', (e) => { state.tests = e.target.checked; render(); });
+  $('#t-gen').addEventListener('change', (e) => { state.generated = e.target.checked; render(); });
+
+  function render() {
+    renderChrome();
+    const v = $('#view');
+    ({ layers: renderLayers, usage: renderUsage, trace: renderTrace, matrix: renderMatrix, areas: renderAreas })[state.view](v);
+  }
+
+  // ---------- Layers ----------
+  function edgeVisible(e) {
+    return e[2] > 0 || (state.tests && e[3] > 0) || (state.generated && e[4] > 0);
+  }
+  function renderLayers(v) {
+    const d = D();
+    const { testProject } = derive(d);
+    const visible = d.projects.map((p, i) => state.tests || !testProject[i]);
+    const maxLayer = Math.max(...d.projects.map((p) => p.layer));
+    const rows = [];
+    for (let l = maxLayer; l >= 0; l--) rows.push(d.projects.map((p, i) => ({ p, i })).filter(({ p, i }) => p.layer === l && visible[i]).sort((a, b) => b.p.files - a.p.files));
+    const maxFiles = Math.max(...d.projects.map((p) => p.files));
+    const violators = new Set(d.violations.flatMap(([a, b]) => [a, b]));
+    const sel = state.project;
+
+    v.innerHTML = `
+      <div class="view-head"><h1>Layers</h1><p>Projects stacked by what they depend on: everything points down. Hover a project to see its dependencies, click to pin it. Rule violations are always drawn.</p></div>
+      <div class="strata-wrap">
+        <div>
+          <div class="strata" id="strata">
+            ${rows.map((row, k) => {
+              const level = maxLayer - k;
+              const caption = k === 0 ? 'entry points' : level === 0 ? 'foundation' : `${row.length} project${row.length === 1 ? '' : 's'}`;
+              return `<div class="stratum"><div class="lv"><b>Level ${level}</b><span>${caption}</span></div><div class="tiles">${row.map(({ p, i }) => {
+                const w = Math.round(130 + 120 * Math.sqrt(p.files / maxFiles));
+                return `<button type="button" class="tile${sel === i ? ' sel' : ''}" data-p="${i}" style="width:${w}px">
+                  ${violators.has(i) ? '<span class="flag" title="Breaks an architecture rule"></span>' : ''}
+                  <span class="nm">${esc(short(p.name))}</span>
+                  <span class="bar" style="width:${Math.max(8, Math.round(100 * p.loc / Math.max(1, ...d.projects.map((q) => q.loc))))}%"></span>
+                  <span class="meta"><span class="num">${fmt(p.files)} files</span>${p.tests ? `<span class="num faint">${fmt(p.tests)} tests</span>` : ''}${p.cyclic ? '<span class="pill warn">cycle</span>' : ''}</span>
+                </button>`;
+              }).join('')}</div></div>`;
+            }).join('')}
+            <svg class="edges" id="edges"></svg>
+          </div>
+          <div class="legend"><span><i style="border-color:var(--accent)"></i>depends on</span><span><i style="border-color:var(--muted);border-top-style:dashed"></i>used by</span><span><i style="border-color:var(--crit)"></i>breaks a rule</span>${state.tests ? '<span><i style="border-color:var(--faint);border-top-style:dotted"></i>only from tests</span>' : ''}</div>
+        </div>
+        <aside class="side" id="side"></aside>
+      </div>`;
+
+    const strata = $('#strata');
+    strata.addEventListener('mouseover', (e) => { const t = e.target.closest('.tile'); if (t) { state.hoverProject = +t.dataset.p; drawEdges(); } });
+    strata.addEventListener('mouseleave', () => { state.hoverProject = null; drawEdges(); });
+    strata.addEventListener('click', (e) => { const t = e.target.closest('.tile'); if (!t) return; state.project = state.project === +t.dataset.p ? null : +t.dataset.p; renderLayers(v); });
+    drawEdges();
+    renderSide();
+    window.onresize = () => state.view === 'layers' && drawEdges();
+  }
+  function drawEdges() {
+    const d = D();
+    const strata = $('#strata');
+    const svg = $('#edges');
+    if (!strata || !svg) return;
+    const box = strata.getBoundingClientRect();
+    const pos = new Map([...strata.querySelectorAll('.tile')].map((t) => {
+      const r = t.getBoundingClientRect();
+      return [+t.dataset.p, { x: r.left - box.left + r.width / 2, top: r.top - box.top, bottom: r.bottom - box.top }];
+    }));
+    const focus = state.hoverProject ?? state.project;
+    const viol = new Set(d.violations.map(([a, b]) => `${a},${b}`));
+    const paths = [];
+    const linked = new Set(focus === null ? [] : [focus]);
+    const curve = (a, b, cls) => {
+      const pa = pos.get(a), pb = pos.get(b);
+      if (!pa || !pb) return;
+      const down = pa.top < pb.top;
+      const y1 = down ? pa.bottom : pa.top, y2 = down ? pb.top : pb.bottom;
+      const my = (y1 + y2) / 2;
+      paths.push(`<path class="${cls}" d="M${pa.x},${y1} C${pa.x},${my} ${pb.x},${my} ${pb.x},${y2}"/>`);
+    };
+    for (const e of d.projectEdges) {
+      if (!edgeVisible(e)) continue;
+      const key = `${e[0]},${e[1]}`;
+      const testOnly = e[2] === 0;
+      if (viol.has(key)) curve(e[0], e[1], 'viol');
+      else if (focus === e[0]) { curve(e[0], e[1], testOnly ? 'test' : 'down'); linked.add(e[1]); }
+      else if (focus === e[1]) { curve(e[0], e[1], testOnly ? 'test' : 'up'); linked.add(e[0]); }
+    }
+    svg.innerHTML = paths.join('');
+    strata.querySelectorAll('.tile').forEach((t) => t.classList.toggle('dim', focus !== null && !linked.has(+t.dataset.p)));
+  }
+  function renderSide() {
+    const d = D();
+    const side = $('#side');
+    const i = state.project;
+    if (i === null) {
+      const rules = d.rules.length
+        ? `<div><h3>Architecture rules</h3><ul>${d.rules.map((r) => `<li><span>${esc(r.text)}</span></li>`).join('')}</ul></div>
+           <div><h3>Broken (${d.violations.length})</h3><ul>${d.violations.map(([a, b, r]) => `<li><span><span class="linkish" data-pick="${a}">${esc(short(d.projects[a].name))}</span> → ${esc(short(d.projects[b].name))}</span></li>`).join('') || '<li class="muted">None</li>'}</ul></div>`
+        : `<div class="callout info"><b>No rules configured</b>Rules (for example "modules must not depend on each other") are read from the project config. This repo has none, so only cycles are flagged.</div>`;
+      const cycles = d.projects.filter((p) => p.cyclic).length;
+      side.innerHTML = `<h2>${esc(LABEL[d.name])}</h2>
+        <div class="stats"><div class="stat"><b>${d.projects.length}</b><span>projects</span></div><div class="stat"><b>${Math.max(...d.projects.map((p) => p.layer)) + 1}</b><span>levels</span></div><div class="stat"><b>${cycles}</b><span>in cycles</span></div></div>
+        ${rules}
+        <p class="faint" style="margin:0;font-size:12px">Select a project for its details.</p>`;
+    } else {
+      const p = d.projects[i];
+      const out = d.projectEdges.filter((e) => e[0] === i && edgeVisible(e)).sort((a, b) => b[2] - a[2]);
+      const inn = d.projectEdges.filter((e) => e[1] === i && edgeVisible(e)).sort((a, b) => b[2] - a[2]);
+      const viol = d.violations.filter(([a, b]) => a === i || b === i);
+      const list = (edges, k) => edges.map((e) => `<li><span class="linkish" data-pick="${e[k]}">${esc(short(d.projects[e[k]].name))}</span><span class="num muted">${e[2] ? fmt(e[2]) : ''}${state.tests && e[3] ? ` <span class="faint">+${fmt(e[3])} test</span>` : ''}</span></li>`).join('') || '<li class="muted">None</li>';
+      side.innerHTML = `<h2>${esc(p.name)}</h2>
+        <div class="muted code" style="font-size:12px">${esc(p.dir)}</div>
+        ${p.tags.length ? `<div class="chips">${p.tags.map((t) => `<span class="pill">${esc(t)}</span>`).join('')}</div>` : ''}
+        <div class="stats"><div class="stat"><b>${fmt(p.files)}</b><span>files</span></div><div class="stat"><b>${fmt(p.loc)}</b><span>lines</span></div><div class="stat dim"><b>${fmt(p.tests)}</b><span>test files</span></div></div>
+        ${viol.map(([a, b, r]) => `<div class="callout crit"><b>Breaks a rule</b>${esc(short(d.projects[a].name))} → ${esc(short(d.projects[b].name))}: ${esc(d.rules.find((x) => x.id === r).text)}</div>`).join('')}
+        ${p.cyclic ? '<div class="callout warn"><b>Part of a dependency cycle</b>It depends, directly or not, on a project that depends on it.</div>' : ''}
+        <div><h3>Depends on (${out.length}) · imports</h3><ul>${list(out, 1)}</ul></div>
+        <div><h3>Used by (${inn.length})</h3><ul>${list(inn, 0)}</ul></div>
+        <div class="chips"><button type="button" data-go="areas" data-p="${i}">Open in Areas</button></div>`;
+    }
+    side.onclick = (e) => {
+      const pick = e.target.closest('[data-pick]');
+      if (pick) { state.project = +pick.dataset.pick; renderLayers($('#view')); }
+      const go = e.target.closest('[data-go]');
+      if (go) { state.view = 'areas'; state.areaRoot = +go.dataset.p; render(); }
+    };
+  }
+
+  // ---------- Usage ----------
+  function defaultSymbol() {
+    const { sym } = derive(D());
+    if (state.ds === 0) return sym.find((s) => s.n === 'loadPromotion')?.i ?? 0;
+    let best = sym[0];
+    let bestScore = -1;
+    for (const s of sym) {
+      if (!isCandidate(s) || s.k === 'type') continue;
+      const projects = new Set(usesOf(s).map((u) => D().files[u[0]].j)).size;
+      const score = projects * 100 + Math.min(usesOf(s).length, 99);
+      if (projects <= 6 && score > bestScore) { best = s; bestScore = score; }
+    }
+    return best.i;
+  }
+  function renderUsage(v) {
+    const d = D();
+    const { sym } = derive(d);
+    if (state.symbol === null) state.symbol = defaultSymbol();
+    const candidates = sym.filter(isCandidate);
+    const counts = { attention: 0, 'tested-only': 0, unused: 0 };
+    for (const s of candidates) {
+      if (s.k === 'type') continue;
+      const st = statusOf(s);
+      if (st !== 'used') { counts[st]++; counts.attention++; }
+    }
+    const q = state.query.trim().toLowerCase();
+    let list = candidates.filter((s) => {
+      if (q) return s.n.toLowerCase().includes(q) || s.file.p.toLowerCase().includes(q);
+      if (state.filter === 'all') return true;
+      if (s.k === 'type') return false;
+      const st = statusOf(s);
+      return state.filter === 'attention' ? st !== 'used' : st === state.filter;
+    });
+    const order = { 'tested-only': 0, unused: 1, used: 2 };
+    list.sort((a, b) => order[statusOf(a)] - order[statusOf(b)] || b.t.length - a.t.length || a.n.localeCompare(b.n));
+    const total = list.length;
+    list = list.slice(0, 250);
+
+    v.innerHTML = `
+      <div class="view-head"><h1>Usage</h1><p>Where each piece is used in production code. Tests are counted apart, so a function with tests but no real use stands out.</p></div>
+      <div class="usage">
+        <section class="finder" aria-label="Find a symbol">
+          <div class="top">
+            <input type="search" id="q" placeholder="Find a function, class, method…" value="${esc(state.query)}" aria-label="Find a symbol">
+            <div class="chips" role="group" aria-label="Filter">
+              ${[['attention', `Needs attention · ${counts.attention}`], ['tested-only', `Tested, never used · ${counts['tested-only']}`], ['unused', `Unused · ${counts.unused}`], ['all', 'All']].map(([k, label]) => `<button type="button" data-filter="${k}" aria-pressed="${!q && state.filter === k}">${label}</button>`).join('')}
+            </div>
+          </div>
+          <div class="results" id="results">
+            ${list.map((s) => {
+              const st = statusOf(s);
+              const badge = st === 'tested-only' ? `<span class="pill crit">0 uses · ${s.t.length} tests</span>` : st === 'unused' ? '<span class="pill warn">no uses</span>' : `<span class="num muted">${usesOf(s).length} uses</span>`;
+              return `<button type="button" data-sym="${s.i}" ${s.i === state.symbol ? 'aria-current="true"' : ''}><span class="sn">${esc(s.n)}</span><span class="sc">${badge}</span><span class="sp">${esc(short(d.projects[s.project].name))} · ${esc(s.k)}</span></button>`;
+            }).join('') || '<div class="more">Nothing matches.</div>'}
+            ${total > list.length ? `<div class="more">${fmt(total - list.length)} more. Refine the search.</div>` : ''}
+          </div>
+        </section>
+        <section id="detail" aria-live="polite"></section>
+      </div>`;
+
+    $('#q').addEventListener('input', (e) => { state.query = e.target.value; const pos = e.target.selectionStart; renderUsage(v); const q2 = $('#q'); q2.focus(); q2.setSelectionRange(pos, pos); });
+    v.querySelector('.chips[role=group]').addEventListener('click', (e) => { const b = e.target.closest('[data-filter]'); if (b) { state.filter = b.dataset.filter; state.query = ''; renderUsage(v); } });
+    $('#results').addEventListener('click', (e) => { const b = e.target.closest('[data-sym]'); if (b) select(+b.dataset.sym); });
+    renderDetail();
+  }
+  function select(i) {
+    if (state.symbol !== null && state.symbol !== i) state.trail = [...state.trail.filter((x) => x !== state.symbol), state.symbol].slice(-6);
+    state.symbol = i;
+    state.upRoute = 0;
+    state.downRoute = 0;
+    if (state.view !== 'usage') { state.view = 'usage'; render(); return; }
+    document.querySelectorAll('#results [data-sym]').forEach((b) => b.toggleAttribute('aria-current', +b.dataset.sym === i));
+    renderDetail();
+  }
+  function renderDetail() {
+    const d = D();
+    const { sym } = derive(d);
+    const s = sym[state.symbol];
+    const el = $('#detail');
+    if (!s) { el.innerHTML = '<div class="empty">Pick a symbol on the left.</div>'; return; }
+    const uses = usesOf(s);
+    const proj = d.projects[s.project];
+
+    // Used by: project → file → enclosing symbol
+    const byProject = new Map();
+    for (const [f, line, from] of uses) {
+      const j = d.files[f].j;
+      if (!byProject.has(j)) byProject.set(j, []);
+      byProject.get(j).push({ f, line, from });
+    }
+    const groups = [...byProject].sort((a, b) => b[1].length - a[1].length);
+    const usedBy = groups.map(([j, refs]) => `
+      <details class="group" ${groups.length <= 4 ? 'open' : ''}><summary><span class="gname">${esc(short(d.projects[j].name))}${j !== s.project ? '' : ' <span class="faint">(same project)</span>'}</span><span class="num muted">${refs.length}</span></summary>
+      <ul class="refs">${refs.slice(0, 40).map((r) => `<li><span class="w ${r.from >= 0 ? 'linkish' : ''}" ${r.from >= 0 ? `data-sym="${r.from}"` : ''}>${r.from >= 0 ? esc(sym[r.from].n) : '(module scope)'}</span><span class="f">${esc(d.files[r.f].p)}:${r.line}</span></li>`).join('')}${refs.length > 40 ? `<li class="faint">+${refs.length - 40} more</li>` : ''}</ul></details>`).join('');
+    const tests = s.t;
+    const testBlock = tests.length
+      ? state.tests
+        ? `<details class="group" open><summary><span class="gname faint">Tests</span><span class="num faint">${tests.length}</span></summary><ul class="refs">${tests.slice(0, 30).map(([f, line]) => `<li><span class="f">${esc(d.files[f].p)}:${line}</span></li>`).join('')}</ul></details>`
+        : `<div class="hidden-note">+ ${tests.length} use${tests.length === 1 ? '' : 's'} in tests (hidden)</div>`
+      : '';
+
+    // Uses: grouped by project
+    const outs = new Map();
+    for (const o of s.o) {
+      const t = sym[o];
+      if (!t || (!state.generated && t.g)) continue;
+      if (!outs.has(t.project)) outs.set(t.project, []);
+      outs.get(t.project).push(t);
+    }
+    const usesBlock = [...outs].sort((a, b) => (a[0] === s.project) - (b[0] === s.project) || b[1].length - a[1].length).map(([j, list]) => `
+      <details class="group" open><summary><span class="gname">${esc(short(d.projects[j].name))}${j === s.project ? ' <span class="faint">(same project)</span>' : ''}</span><span class="num muted">${list.length}</span></summary>
+      <ul class="refs">${list.slice(0, 40).map((t) => `<li><span class="w linkish" data-sym="${t.i}">${esc(t.n)}</span><span class="f">${esc(t.k)} · ${esc(t.file.p.split('/').pop())}</span></li>`).join('')}</ul></details>`).join('');
+
+    const st = statusOf(s);
+    const projectsUsing = new Set(uses.map((u) => d.files[u[0]].j)).size;
+    const callouts = [];
+    if (st === 'tested-only') callouts.push(`<div class="callout crit"><b>Tested, but never used</b>${tests.length} test${tests.length === 1 ? '' : 's'} keep this alive; no production code calls it.</div>`);
+    if (st === 'unused') callouts.push('<div class="callout warn"><b>No uses found</b>Nothing in this repo references it, not even tests.</div>');
+    if (st !== 'used' && publishedLibrary(s)) callouts.push('<div class="callout info"><b>Published library</b>This package is published, so it may be used outside this repo. Confirm against its public exports before removing it.</div>');
+    const cross = [...byProject.keys()].filter((j) => j !== s.project && d.projects[j].tags.includes('type:gql-module') && proj.tags.includes('type:gql-module'));
+    if (cross.length) callouts.push(`<div class="callout warn"><b>Shared across modules</b>Used by ${cross.map((j) => esc(short(d.projects[j].name))).join(', ')}. A blocker for splitting into subgraphs.</div>`);
+
+    el.innerHTML = `
+      ${state.trail.length ? `<div class="crumbs">Back to ${state.trail.map((i) => `<button type="button" data-sym="${i}">${esc(sym[i].n)}</button>`).join('<span>·</span>')}</div>` : ''}
+      <div class="trio">
+        <div class="col"><h3><span>Used by</span><span class="num">${uses.length} in ${projectsUsing} project${projectsUsing === 1 ? '' : 's'}</span></h3>${usedBy || '<div class="hidden-note" style="border:0">No production code uses it.</div>'}${testBlock}</div>
+        <div class="card">
+          <span class="kind">${esc(s.k)}${s.x ? ' · exported' : ''}</span>
+          <span class="name">${esc(s.n)}</span>
+          <span class="where">${esc(s.file.p)}:${s.l}<br>${esc(proj.name)}</span>
+          <div class="stats"><div class="stat"><b>${uses.length}</b><span>uses</span></div><div class="stat"><b>${projectsUsing}</b><span>projects</span></div><div class="stat dim"><b>${tests.length}</b><span>tests</span></div></div>
+          ${callouts.join('')}
+        </div>
+        <div class="col"><h3><span>Uses</span><span class="num">${s.o.length}</span></h3>${usesBlock || '<div class="hidden-note" style="border:0">Uses nothing else in this repo.</div>'}</div>
+      </div>
+      <section class="flowsec" id="flowsec" aria-label="Request flow"></section>`;
+    el.onclick = (e) => { const b = e.target.closest('[data-sym]'); if (b) select(+b.dataset.sym); };
+    renderFlow(s);
+  }
+
+  // ---------- Request flow (entry → piece → exit) ----------
+  function flowIndex(d) {
+    if (d._flow) return d._flow;
+    const f = d.flow;
+    const idx = { resolverAt: new Map(), loaderOfUser: new Map(), loadersByOwner: new Map(), exitsFrom: new Map(), opsByField: new Map(), http: null };
+    if (f) {
+      for (const r of f.resolverFields) { if (!idx.resolverAt.has(r.file)) idx.resolverAt.set(r.file, []); idx.resolverAt.get(r.file).push(r); }
+      f.loaders.forEach((l, i) => {
+        l.users.forEach((u) => u >= 0 && idx.loaderOfUser.set(u, i));
+        if (!idx.loadersByOwner.has(l.owner)) idx.loadersByOwner.set(l.owner, []);
+        idx.loadersByOwner.get(l.owner).push(i);
+      });
+      f.exits.forEach((e, i) => { if (e.from >= 0 && e.via === 'call') { if (!idx.exitsFrom.has(e.from)) idx.exitsFrom.set(e.from, []); idx.exitsFrom.get(e.from).push(i); } });
+      for (const op of f.operations) for (const fl of op.fields) {
+        const k = `${fl.type}.${fl.field}`;
+        if (!idx.opsByField.has(k)) idx.opsByField.set(k, []);
+        if (!idx.opsByField.get(k).includes(op)) idx.opsByField.get(k).push(op);
+      }
+      idx.http = f.entries.find((e) => e.app === 'apps/bff') ?? f.entries[0];
+    }
+    return (d._flow = idx);
+  }
+  const at = (d, f, line) => `${d.files[f]?.p ?? '?'}${line ? `:${line}` : ''}`;
+  const loaderLabel = (d, l) => `DataLoader ${derive(d).sym[l.owner]?.n ?? '?'}.${l.field}`;
+
+  /** Routes from an entry point down to `s` (each route lists the steps before `s`). */
+  function upstreamRoutes(s) {
+    const d = D();
+    const { sym } = derive(d);
+    const fx = flowIndex(d);
+    const routes = [];
+    const walk = (cur, tail, depth, seen) => {
+      if (routes.length >= 60) return;
+      const done = new Set();
+      for (const [f, line, from] of usesOf(cur)) {
+        if (routes.length >= 60) return;
+        const rf = (fx.resolverAt.get(f) ?? []).find((r) => r.line <= line && line <= r.endLine);
+        if (rf) {
+          const key = `field:${rf.type}.${rf.field}`;
+          if (done.has(key)) continue;
+          done.add(key);
+          const field = { kind: 'field', label: `${rf.type}.${rf.field}`, sub: `resolver · ${at(d, f, rf.line)}`, via: 'framework' };
+          const ops = fx.opsByField.get(`${rf.type}.${rf.field}`) ?? [];
+          if (!ops.length) routes.push({ group: 'Not reached by any persisted query', steps: [field, ...tail], dead: true });
+          for (const op of ops) {
+            routes.push({ group: op.name, steps: [
+              { kind: 'http', label: `${fx.http.method} ${fx.http.path}`, sub: `${fx.http.file}:${fx.http.line}`, via: 'code' },
+              { kind: 'operation', label: op.name, sub: op.file, via: 'framework' },
+              field, ...tail] });
+          }
+          continue;
+        }
+        const key = from >= 0 ? `s${from}` : `m${f}`;
+        if (done.has(key)) continue;
+        done.add(key);
+        if (from < 0) { routes.push({ group: 'Module scope', steps: [{ kind: 'module', label: `${d.files[f].p.split('/').pop()} (top level)`, sub: at(d, f, line), via: 'code' }, ...tail] }); continue; }
+        const c = sym[from];
+        if (!c || c.k === 'type' || seen.has(from)) continue;
+        // Called from a DataLoader batch function: continue through the methods that use the loader.
+        const viaLoader = (fx.loadersByOwner.get(from) ?? []).map((li) => d.flow.loaders[li]).find((l) => l.targets.includes(cur.i));
+        if (viaLoader) {
+          const loaderStep = { kind: 'loader', label: loaderLabel(d, viaLoader), sub: `batch function · ${at(d, viaLoader.file, viaLoader.line)}`, via: 'loader' };
+          for (const u of viaLoader.users) {
+            const us = sym[u];
+            if (!us || seen.has(u)) continue;
+            const before = routes.length;
+            walk(us, [{ kind: 'symbol', sym: u, label: us.n, sub: at(d, us.f, us.l), via: 'code' }, loaderStep, ...tail], depth + 1, new Set([...seen, u]));
+            if (routes.length === before) routes.push({ group: 'No entry found', steps: [{ kind: 'symbol', sym: u, label: us.n, sub: at(d, us.f, us.l), via: 'code' }, loaderStep, ...tail], root: true });
+          }
+          continue;
+        }
+        const step = { kind: 'symbol', sym: from, label: c.n, sub: at(d, f, line), via: 'code' };
+        if (depth >= 7) { routes.push({ group: 'Deeper…', steps: [step, ...tail], truncated: true }); continue; }
+        const before = routes.length;
+        walk(c, [step, ...tail], depth + 1, new Set([...seen, from]));
+        if (routes.length === before) routes.push({ group: d.flow ? 'No entry found' : short(d.projects[c.project].name), steps: [step, ...tail], root: true });
+      }
+    };
+    walk(s, [], 0, new Set([s.i]));
+    return routes;
+  }
+
+  /** Routes from `s` down to an exit (external call), plus the helpers that lead nowhere external. */
+  function downstreamRoutes(s) {
+    const d = D();
+    const { sym } = derive(d);
+    const fx = flowIndex(d);
+    const routes = [];
+    const helpers = new Set();
+    const exitStep = (ei) => {
+      const e = d.flow.exits[ei];
+      return { kind: 'exit', label: `${e.method} ${e.path}`, api: e.client ?? 'unknown client', sub: at(d, e.file, e.line), via: e.clientVia.startsWith('heuristic') ? 'heuristic' : 'code' };
+    };
+    const walk = (cur, head, depth, seen) => {
+      if (routes.length >= 40) return false;
+      let reached = false;
+      for (const ei of fx.exitsFrom.get(cur.i) ?? []) { routes.push({ steps: [...head, exitStep(ei)] }); reached = true; }
+      const li = fx.loaderOfUser.get(cur.i);
+      if (li !== undefined) {
+        const l = d.flow.loaders[li];
+        const loaderStep = { kind: 'loader', label: loaderLabel(d, l), sub: `batch function · ${at(d, l.file, l.line)}`, via: 'loader' };
+        for (const ei of l.exits) { routes.push({ steps: [...head, loaderStep, exitStep(ei)] }); reached = true; }
+        for (const t of l.targets) {
+          const ts = sym[t];
+          if (!ts || seen.has(t)) continue;
+          if (walk(ts, [...head, loaderStep, { kind: 'symbol', sym: t, label: ts.n, sub: at(d, ts.f, ts.l), via: 'code' }], depth + 1, new Set([...seen, t]))) reached = true;
+        }
+      }
+      for (const o of cur.o) {
+        const t = sym[o];
+        if (!t || seen.has(o) || !['function', 'method'].includes(t.k) || (!state.generated && t.g)) continue;
+        if (depth >= 6) continue;
+        const step = { kind: 'symbol', sym: o, label: t.n, sub: at(d, t.f, t.l), via: 'code' };
+        if (walk(t, [...head, step], depth + 1, new Set([...seen, o]))) reached = true;
+        else if (depth === 0 || !d.flow) helpers.add(o);
+      }
+      if (!reached && !d.flow && head.length && depth > 0) routes.push({ steps: head, leaf: true });
+      return reached;
+    };
+    walk(s, [], 0, new Set([s.i]));
+    if (!d.flow) for (const r of routes) r.steps.forEach((st) => st.sym !== undefined && helpers.delete(st.sym));
+    return { routes, helpers: [...helpers].map((i) => sym[i]).filter(Boolean) };
+  }
+
+  const viaTag = (via) => via === 'code' ? '' : `<span class="pill warn" title="Inferred, not a direct call in the code">${via === 'framework' ? 'framework' : via === 'loader' ? 'DataLoader' : 'inferred'}</span>`;
+
+  function renderFlow(s) {
+    const d = D();
+    const host = $('#flowsec');
+    if (!host) return;
+    const ups = upstreamRoutes(s);
+    const { routes: downs, helpers } = downstreamRoutes(s);
+    state.upRoute = Math.min(state.upRoute, Math.max(0, ups.length - 1));
+    state.downRoute = Math.min(state.downRoute, Math.max(0, downs.length - 1));
+    const up = ups[state.upRoute];
+    const down = downs[state.downRoute];
+    const self = { kind: 'self', sym: s.i, label: s.n, sub: at(d, s.f, s.l), via: 'code' };
+    const route = [...(up?.steps ?? []), self, ...(down?.steps ?? [])];
+    const ops = new Set(ups.filter((r) => !r.dead && !r.root && r.group !== 'Module scope').map((r) => r.group));
+    const fields = new Set(ups.map((r) => r.steps.find((st) => st.kind === 'field')?.label).filter(Boolean));
+    const summary = d.flow
+      ? `${ops.size} operation${ops.size === 1 ? '' : 's'} and ${fields.size} schema field${fields.size === 1 ? '' : 's'} lead here; ${downs.length} path${downs.length === 1 ? '' : 's'} out to external APIs.`
+      : 'Entry points and external calls need the framework adapter, which this repo (graphql-modules) does not have in the prototype. Showing code callers and callees only.';
+
+    host.innerHTML = `
+      <header><h2>Request flow</h2><p>${summary}</p>
+        <div class="seg" role="group" aria-label="Flow format">${[['flow', 'Flow'], ['path', 'Path'], ['sequence', 'Sequence']].map(([k, label]) => `<button type="button" data-mode="${k}" aria-pressed="${state.flowMode === k}">${label}</button>`).join('')}</div>
+      </header>
+      <div class="flowbody">${state.flowMode === 'flow' ? flowHtml(s, ups, downs, helpers) : state.flowMode === 'path' ? pathHtml(route) : sequenceSvg(route)}</div>
+      <div class="flowlegend"><span><i></i>call in the code</span><span><i class="inf"></i>inferred: framework, DataLoader or client wiring</span>${state.flowMode !== 'flow' ? '<span>Pick another entry or exit in Flow to change the path.</span>' : ''}</div>`;
+    host.onclick = (e) => {
+      const m = e.target.closest('[data-mode]');
+      if (m) { state.flowMode = m.dataset.mode; renderFlow(s); return; }
+      const u = e.target.closest('[data-up]');
+      if (u) { state.upRoute = +u.dataset.up; renderFlow(s); return; }
+      const dn = e.target.closest('[data-down]');
+      if (dn) { state.downRoute = +dn.dataset.down; renderFlow(s); }
+    };
+  }
+
+  function flowHtml(s, ups, downs, helpers) {
+    const d = D();
+    const groups = new Map();
+    ups.forEach((r, i) => { if (!groups.has(r.group)) groups.set(r.group, []); groups.get(r.group).push({ r, i }); });
+    const MAX_GROUPS = 12;
+    const ordered = [...groups].sort((a, b) => b[1].some(({ i }) => i === state.upRoute) - a[1].some(({ i }) => i === state.upRoute));
+    const hiddenGroups = Math.max(0, ordered.length - MAX_GROUPS);
+    const entryHtml = ordered.slice(0, MAX_GROUPS).map(([group, items]) => {
+      const first = items[0].r.steps.find((st) => st.kind === 'http');
+      return `<details class="opgroup" ${items.some(({ i }) => i === state.upRoute) ? 'open' : ''}>
+        <summary><span class="gname">${esc(group)}</span>${first ? `<span class="pill">${esc(first.label)}</span>` : ''}<span class="num muted">${items.length}</span></summary>
+        ${items.slice(0, 8).map(({ r, i }) => {
+          const lead = r.steps.find((st) => st.kind === 'field') ?? r.steps[0];
+          const middle = r.steps.filter((st) => (st.kind === 'symbol' || st.kind === 'loader') && st !== lead).map((st) => st.label);
+          const via = middle.length > 3 ? `${middle[0]} → … → ${middle.at(-1)} (${middle.length} steps)` : middle.join(' → ');
+          return `<button type="button" class="route" data-up="${i}" aria-pressed="${i === state.upRoute}"><span class="rl">${esc(lead?.label ?? s.n)}</span><span class="rt">${viaTag(lead?.via ?? 'code')}</span><span class="rs">${via ? `via ${esc(via)}` : esc(lead?.sub ?? '')}</span></button>`;
+        }).join('')}${items.length > 8 ? `<div class="helpers" style="padding:6px 10px;border-top:1px solid var(--line)">+ ${items.length - 8} more</div>` : ''}
+      </details>`;
+    }).join('') + (hiddenGroups ? `<div class="helpers">+ ${hiddenGroups} more entry groups</div>` : '') || '<div class="empty" style="padding:12px">Nothing calls it.</div>';
+    const exitHtml = downs.slice(0, 12).map((r, i) => {
+      const last = r.steps.at(-1);
+      const shown = r.steps.slice(0, last.kind === 'exit' ? -1 : undefined);
+      const chainSteps = shown.length > 4 ? [shown[0], { label: '…', via: 'code' }, ...shown.slice(-2)] : shown;
+      const chain = chainSteps.map((st) => `<span class="${st.via === 'code' ? 'via-code' : ''}" style="${st.via !== 'code' ? 'color:var(--warn)' : ''}">${esc(st.label)}</span>`).join('<span class="arrow">→</span>');
+      return `<button type="button" class="route exitroute" data-down="${i}" aria-pressed="${i === state.downRoute}">
+        <span class="rl">${chain}${last.kind === 'exit' ? `<span class="arrow">→</span><span class="api" style="background:var(--ink);color:var(--bg)">${esc(last.label)} · ${esc(last.api)}</span>` : ''}</span>
+        <span class="rt">${last.kind === 'exit' ? viaTag(last.via) : '<span class="pill">ends here</span>'}</span></button>`;
+    }).join('') + (downs.length > 12 ? `<div class="helpers">+ ${downs.length - 12} more paths</div>` : '') || '<div class="empty" style="padding:12px">No external call below this.</div>';
+    return `<div class="flow3">
+      <div class="zone"><h4>Entries</h4>${entryHtml}</div>
+      <div class="zone mid"><span class="kind" style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:600">${esc(s.k)}</span><span class="name">${esc(s.n)}</span><span class="faint" style="font-size:11.5px">${esc(at(d, s.f, s.l).split('/').slice(-1)[0])}</span></div>
+      <div class="zone"><h4>Exits</h4>${exitHtml}${helpers.length ? `<div class="helpers">Also calls ${helpers.slice(0, 6).map((h) => `<span class="linkish" data-sym="${h.i}">${esc(h.n)}</span>`).join(', ')}${helpers.length > 6 ? ` and ${helpers.length - 6} more` : ''} (no external call below).</div>` : ''}</div>
+    </div>`;
+  }
+
+  function pathHtml(route) {
+    return `<ol class="path">${route.map((st, k) => `
+      <li class="${st.kind === 'self' ? 'sel' : ''} ${st.kind === 'exit' ? 'exit' : ''} ${route[k + 1] && route[k + 1].via !== 'code' ? 'inf' : ''}">
+        <span class="dot">${k + 1}</span>
+        <span class="what">${st.sym !== undefined && st.kind !== 'self' ? `<span class="linkish" data-sym="${st.sym}">${esc(st.label)}</span>` : esc(st.label)}${st.kind === 'exit' ? ` <span class="faint">→ ${esc(st.api)}</span>` : ''}${st.kind === 'self' ? ' <span class="pill ok">selected</span>' : ''}<small>${esc(st.kind === 'operation' ? 'persisted query' : st.kind === 'http' ? 'HTTP entry' : st.kind === 'field' ? 'schema field' : st.kind === 'loader' ? 'batching' : st.kind === 'exit' ? 'external call' : '')}${st.sub ? ` · ${esc(st.sub)}` : ''}</small></span>
+        <span class="tag">${viaTag(st.via)}</span>
+      </li>`).join('')}</ol>`;
+  }
+
+  function sequenceSvg(route) {
+    // Participants: the client, then each step; the operation becomes the client's message; an exit becomes the API.
+    const parts = [];
+    const msgs = [];
+    const add = (label, cls = '', code = true) => { parts.push({ label, cls, code }); return parts.length - 1; };
+    let prev = null;
+    let opName = null;
+    if (route[0]?.kind === 'http') prev = add('Client', '', false);
+    for (const st of route) {
+      if (st.kind === 'operation') { opName = st.label; continue; }
+      if (st.kind === 'exit') {
+        const api = add(st.api, 'api', false);
+        msgs.push({ from: prev, to: api, label: st.label, inf: st.via !== 'code' });
+        prev = api;
+        continue;
+      }
+      const label = st.kind === 'loader' ? st.label.replace('DataLoader ', 'DataLoader\n') : st.label;
+      const idx = add(label, st.kind === 'self' ? 'sel' : '', st.kind !== 'http');
+      if (prev !== null) {
+        const text = st.kind === 'http' ? `${st.label}${opName ? '' : ''}` : st.kind === 'field' ? `resolve ${st.label}` : st.kind === 'loader' ? 'load(key)' : prev !== null && parts[prev].label.startsWith('DataLoader') ? `batch(keys) → ${st.label.split('.').pop()}()` : `${st.label.split('.').pop()}()`;
+        msgs.push({ from: prev, to: idx, label: text, inf: st.via !== 'code' || parts[prev].label.startsWith('DataLoader') });
+      }
+      prev = idx;
+    }
+    if (msgs[0] && parts[msgs[0].from].label === 'Client') msgs[0].label = `POST ${opName ? `· ${opName}` : ''}`;
+    const colW = 158, headH = 44, top = 14, rowH = 40;
+    const W = parts.length * colW + 20;
+    const H = top + headH + 24 + (msgs.length * 2 + 1) * (rowH / 1.6) + 30;
+    const x = (i) => 10 + i * colW + colW / 2;
+    const lines = (t) => {
+      const words = t.replace(/\n/g, '\n').split('\n').flatMap((p) => (p.length > 22 ? [p.slice(0, 21), p.slice(21, 42)] : [p]));
+      return words.slice(0, 2);
+    };
+    let y = top + headH + 26;
+    const parts2 = parts.map((p, i) => {
+      const [l1, l2] = lines(p.label);
+      return `<rect class="head ${p.cls}" x="${x(i) - colW / 2 + 6}" y="${top}" width="${colW - 12}" height="${headH}" rx="6"/>
+        <text class="${p.code ? 'code' : ''} ${p.cls === 'api' ? 'apitxt' : ''}" x="${x(i)}" y="${top + (l2 ? 18 : 26)}" text-anchor="middle">${esc(l1)}</text>
+        ${l2 ? `<text class="${p.code ? 'code' : ''} ${p.cls === 'api' ? 'apitxt' : ''}" x="${x(i)}" y="${top + 33}" text-anchor="middle">${esc(l2)}</text>` : ''}
+        <line class="life" x1="${x(i)}" y1="${top + headH}" x2="${x(i)}" y2="${H - 10}"/>`;
+    }).join('');
+    const arrows = [];
+    for (const m of msgs) {
+      const x1 = x(m.from), x2 = x(m.to);
+      const dir = x2 > x1 ? 1 : -1;
+      arrows.push(`<line class="msg ${m.inf ? 'inf' : ''}" x1="${x1}" y1="${y}" x2="${x2 - dir * 6}" y2="${y}" marker-end="url(#ah${m.inf ? 'i' : ''})"/>
+        <text x="${(x1 + x2) / 2}" y="${y - 6}" text-anchor="middle" class="code">${esc(m.label)}</text>`);
+      y += rowH / 1.6 + 6;
+    }
+    for (const m of [...msgs].reverse()) {
+      const x1 = x(m.to), x2 = x(m.from);
+      arrows.push(`<line class="ret" x1="${x1}" y1="${y}" x2="${x2 + 6}" y2="${y}" marker-end="url(#ahr)"/>`);
+      y += rowH / 2.6;
+    }
+    return `<div class="seq"><svg width="${W}" height="${y + 16}" viewBox="0 0 ${W} ${y + 16}" role="img" aria-label="Sequence diagram">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker>
+        <marker id="ahi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--warn)"/></marker>
+        <marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="none" stroke="var(--faint)"/></marker>
+      </defs>${parts2}${arrows.join('')}</svg></div>`;
+  }
+
+  // ---------- Trace ----------
+  function renderTrace(v) {
+    const d = D();
+    if (!d.trace) {
+      v.innerHTML = `<div class="view-head"><h1>Trace</h1><p>From a client query to every service and external API it reaches.</p></div>
+        <div class="empty">The trace needs the GraphQL layer, which the real tool builds in phase 3. This prototype shows it with the fixture. <button type="button" data-ds="0" class="linkish" style="border:0;background:none;color:inherit;font:inherit;padding:0">Switch to the fixture</button>.</div>`;
+      return;
+    }
+    const ops = d.trace.operations;
+    const op = ops[state.op] ?? ops[0];
+    const apis = new Map();
+    const rows = [];
+    const walk = (fields, depth) => {
+      for (const f of fields) {
+        rows.push({ f, depth });
+        for (const c of f.chain) if (c.api) apis.set(c.api, (apis.get(c.api) ?? 0) + 1);
+        if (f.children) walk(f.children, depth + 1);
+      }
+    };
+    walk(op.fields, 0);
+    const apiNames = [...apis.keys()];
+    const apiColor = (name) => `var(--api-${(['cms-api', 'catalog-api', 'availability-api', 'promotions-api', 'people-api (GraphQL)'].indexOf(name) + 6) % 6 + 1})`;
+    const step = (c) => {
+      if (c.kind === 'call') return `<span class="api" style="background:${apiColor(c.api)}">${esc(c.label)}<span style="opacity:.8">· ${esc(c.api)}</span></span>`;
+      if (c.kind === 'none') return `<span class="faint" style="font-size:12px">${esc(c.label)}</span>`;
+      return `<span class="step${c.crossModule ? ' cross' : ''}"><small>${esc(c.kind)}</small>${esc(c.label)}${c.where ? `<span class="faint">· ${esc(c.where)}</span>` : ''}</span>`;
+    };
+    v.innerHTML = `
+      <div class="view-head"><h1>Trace</h1><p>A persisted query, field by field: the resolver that answers it, the services behind it and the external calls it ends in.</p></div>
+      <div class="ops" role="group" aria-label="Operation">${ops.map((o, i) => `<button type="button" data-op="${i}" aria-pressed="${o === op}">${esc(o.name)}</button>`).join('')}</div>
+      <div class="apis">Reaches ${apiNames.length} API${apiNames.length === 1 ? '' : 's'}: ${apiNames.map((a) => `<span class="api" style="background:${apiColor(a)}">${esc(a)} <span style="opacity:.8">×${apis.get(a)}</span></span>`).join('')}</div>
+      <div class="trace"><table>
+        <thead><tr><th>Field</th><th>Resolver</th><th>Path to the data</th></tr></thead>
+        <tbody>${rows.map(({ f, depth }) => `
+          <tr><td class="field"><span class="tw">${'│ '.repeat(depth)}${depth ? '└ ' : ''}</span>${esc(f.path)}${f.pointer ? ' <span class="pill">pointer</span>' : ''}${f.subgraph ? ` <span class="pill ok">subgraph: ${esc(f.subgraph)}</span>` : ''}<span class="type">${'&nbsp;'.repeat(depth * 2)}${esc(f.type)}</span></td>
+          <td class="res">${esc(f.resolver)}</td>
+          <td><div class="chain">${f.chain.map(step).join('<span class="arrow">→</span>')}</div></td></tr>
+          ${f.warning ? `<tr class="warnrow"><td colspan="3">⚠ ${esc(f.warning)}</td></tr>` : ''}
+          ${f.note ? `<tr class="note"><td colspan="3">${esc(f.note)}</td></tr>` : ''}`).join('')}
+        </tbody></table></div>
+      <p class="faint" style="font-size:12px">${esc(d.trace.note)}</p>`;
+    v.querySelector('.ops').onclick = (e) => { const b = e.target.closest('[data-op]'); if (b) { state.op = +b.dataset.op; renderTrace(v); } };
+  }
+
+  // ---------- Matrix ----------
+  function renderMatrix(v) {
+    const d = D();
+    const { testProject } = derive(d);
+    const idx = d.projects.map((p, i) => i).filter((i) => state.tests || !testProject[i])
+      .sort((a, b) => d.projects[b].layer - d.projects[a].layer || d.projects[a].name.localeCompare(d.projects[b].name));
+    const pos = new Map(idx.map((p, k) => [p, k]));
+    const n = idx.length;
+    const cell = n > 28 ? 18 : 24;
+    const left = Math.min(230, 20 + Math.max(...idx.map((i) => short(d.projects[i].name).length)) * 6.6);
+    const top = left;
+    const W = left + n * cell + 110, H = top + n * cell + 10; // room on the right for the last slanted labels
+    const viol = new Set(d.violations.map(([a, b]) => `${a},${b}`));
+    const value = (e) => e[2] + (state.tests ? e[3] : 0) + (state.generated ? e[4] : 0);
+    const max = Math.max(1, ...d.projectEdges.map(value));
+    const cells = [];
+    for (const e of d.projectEdges) {
+      const val = value(e);
+      if (!val || !pos.has(e[0]) || !pos.has(e[1])) continue;
+      const r = pos.get(e[0]), c = pos.get(e[1]);
+      const below = c < r && d.projects[e[1]].layer >= d.projects[e[0]].layer;
+      const alpha = 0.18 + 0.82 * Math.log1p(val) / Math.log1p(max);
+      const testOnly = e[2] === 0;
+      cells.push(`<rect class="cell${viol.has(`${e[0]},${e[1]}`) ? ' viol' : ''}" x="${left + c * cell}" y="${top + r * cell}" width="${cell}" height="${cell}" rx="2"
+        style="fill:${below ? 'var(--crit)' : testOnly ? 'var(--faint)' : 'var(--accent)'};fill-opacity:${alpha.toFixed(2)}"
+        data-a="${e[0]}" data-b="${e[1]}" data-v="${val}" data-t="${e[3]}" data-g="${e[4]}"/>`);
+    }
+    const labels = idx.map((p, k) => {
+      const name = esc(short(d.projects[p].name));
+      return `<text x="${left - 8}" y="${top + k * cell + cell / 2 + 4}" text-anchor="end" data-row="${k}">${name}</text>
+        <text transform="translate(${left + k * cell + cell / 2 + 4},${top - 8}) rotate(-60)" data-col="${k}">${name}</text>`;
+    }).join('');
+    const grid = idx.map((_, k) => `<rect class="diag" x="${left + k * cell}" y="${top + k * cell}" width="${cell}" height="${cell}"/>`).join('');
+    v.innerHTML = `
+      <div class="view-head"><h1>Matrix</h1><p>Each row depends on the columns it has marks in; darker means more imports. Rows are ordered by level, so healthy dependencies sit to the right of the diagonal. Red marks point up a level or close a cycle.</p></div>
+      <div class="matrix"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Project dependency matrix">${grid}${cells.join('')}${labels}</svg></div>
+      <div class="scale"><span><i style="background:var(--accent)"></i>depends on</span><span><i style="background:var(--crit)"></i>points up / cycle</span><span><i style="background:var(--surface);outline:2px solid var(--crit)"></i>breaks a rule</span>${state.tests ? '<span><i style="background:var(--faint)"></i>only from tests</span>' : ''}</div>`;
+    const tip = $('#tip');
+    const svg = v.querySelector('svg');
+    svg.addEventListener('mousemove', (e) => {
+      const r = e.target.closest('rect.cell');
+      svg.querySelectorAll('text.hl').forEach((t) => t.classList.remove('hl'));
+      if (!r) { tip.hidden = true; return; }
+      const a = +r.dataset.a, b = +r.dataset.b;
+      svg.querySelector(`[data-row="${pos.get(a)}"]`)?.classList.add('hl');
+      svg.querySelector(`[data-col="${pos.get(b)}"]`)?.classList.add('hl');
+      tip.innerHTML = `<b>${esc(short(d.projects[a].name))}</b> → <b>${esc(short(d.projects[b].name))}</b><br>${fmt(+r.dataset.v)} imports${+r.dataset.t ? ` (${r.dataset.t} from tests)` : ''}`;
+      tip.hidden = false;
+      tip.style.left = Math.min(e.clientX + 14, innerWidth - 330) + 'px';
+      tip.style.top = e.clientY + 14 + 'px';
+    });
+    svg.addEventListener('mouseleave', () => { tip.hidden = true; });
+  }
+
+  // ---------- Areas ----------
+  function fileHealth(d) {
+    const { sym } = derive(d);
+    const per = new Map();
+    for (const s of sym) {
+      if (!s.x || s.k === 'type' || s.g) continue;
+      const h = per.get(s.f) ?? { total: 0, dead: 0, testedOnly: 0 };
+      h.total++;
+      const st = statusOf(s);
+      if (st !== 'used') h.dead++;
+      if (st === 'tested-only') h.testedOnly++;
+      per.set(s.f, h);
+    }
+    return per;
+  }
+  function renderAreas(v) {
+    const d = D();
+    const { testProject } = derive(d);
+    const health = fileHealth(d);
+    const keep = (f) => (state.tests || f.k !== 't') && (state.generated || f.k !== 'g') && f.loc > 0;
+    const rootProject = state.areaRoot;
+    let root;
+    if (rootProject === null) {
+      root = { name: 'repo', children: d.projects.map((p, j) => ({ name: short(p.name), project: j, children: d.files.map((f, i) => ({ f, i })).filter(({ f }) => f.j === j && keep(f) && (state.tests || !testProject[j])).map(({ f, i }) => ({ name: f.p.split('/').pop(), file: i, value: f.loc })) })).filter((g) => g.children.length) };
+    } else {
+      const p = d.projects[rootProject];
+      const dirs = new Map();
+      d.files.forEach((f, i) => {
+        if (f.j !== rootProject || !keep(f)) return;
+        const rel = f.p.slice(p.dir === '(root)' ? 0 : p.dir.length + 1);
+        const parts = rel.split('/');
+        const dir = parts.length > 1 ? parts.slice(0, Math.min(parts.length - 1, 3)).join('/') : '.';
+        if (!dirs.has(dir)) dirs.set(dir, []);
+        dirs.get(dir).push({ name: parts.at(-1), file: i, value: f.loc });
+      });
+      root = { name: short(p.name), children: [...dirs].map(([name, children]) => ({ name, children })) };
+    }
+    const width = Math.max(320, v.clientWidth - 22);
+    const height = Math.max(420, Math.min(720, Math.round(width * 0.62)));
+    const h = d3.hierarchy(root).sum((n) => n.value ?? 0).sort((a, b) => b.value - a.value);
+    // paddingOuter also sets paddingTop, so it must come first.
+    d3.treemap().tile(d3.treemapSquarify).size([width, height]).paddingInner(2).paddingOuter(3).paddingTop((n) => (n.depth === 1 ? 18 : 3)).round(true)(h);
+    const cls = (file) => {
+      const f = d.files[file];
+      if (f.k === 't' || f.k === 'g') return 't';
+      const s = health.get(file);
+      if (!s) return 'hn';
+      const r = s.dead / s.total;
+      return r === 0 ? 'h0' : r < 0.34 ? 'h1' : r < 0.67 ? 'h2' : 'h3';
+    };
+    const leaves = h.leaves().map((n) => {
+      const w = n.x1 - n.x0, hh = n.y1 - n.y0;
+      const label = w > 60 && hh > 16 ? `<text x="${n.x0 + 4}" y="${n.y0 + 13}">${esc(n.data.name.length * 6.4 > w - 8 ? n.data.name.slice(0, Math.max(3, Math.floor((w - 8) / 6.4) - 1)) + '…' : n.data.name)}</text>` : '';
+      return `<rect class="leaf ${cls(n.data.file)}" x="${n.x0}" y="${n.y0}" width="${w}" height="${hh}" data-file="${n.data.file}"/>${label}`;
+    }).join('');
+    const groups = h.children?.map((g) => `<rect class="grp" x="${g.x0}" y="${g.y0}" width="${g.x1 - g.x0}" height="${g.y1 - g.y0}" rx="3" ${g.data.project !== undefined ? `data-project="${g.data.project}" style="cursor:pointer"` : ''}/>${g.x1 - g.x0 > 50 ? `<text class="g" x="${g.x0 + 5}" y="${g.y0 + 13}">${esc(g.data.name)}</text>` : ''}`).join('') ?? '';
+    const totals = [...health.values()].reduce((a, s) => ({ dead: a.dead + s.dead, tested: a.tested + s.testedOnly, total: a.total + s.total }), { dead: 0, tested: 0, total: 0 });
+    v.innerHTML = `
+      <div class="view-head"><h1>Areas${rootProject !== null ? ` <span class="muted" style="font-weight:500">· ${esc(short(d.projects[rootProject].name))}</span>` : ''}</h1><p>Size is lines of code. Colour is the share of a file's exported functions and classes that nothing in production uses.${rootProject === null ? ' Click a project to open it.' : ''}</p></div>
+      ${rootProject !== null ? '<div class="crumbs"><button type="button" id="up">← all projects</button></div>' : ''}
+      <div class="areas"><svg viewBox="0 0 ${width} ${height}" height="${height}" role="img" aria-label="Treemap of files">${leaves}${groups}</svg></div>
+      <div class="scale"><span><i style="background:var(--h0)"></i>all exports used</span><span><i style="background:var(--h1)"></i>some unused</span><span><i style="background:var(--h2)"></i>many unused</span><span><i style="background:var(--h3)"></i>mostly unused</span><span><i style="background:var(--hn)"></i>no exported code</span>
+        <span class="muted">· Across the repo: ${fmt(totals.dead)} of ${fmt(totals.total)} exported functions and classes have no production use, ${fmt(totals.tested)} of them only tests.</span></div>`;
+    const tip = $('#tip');
+    const svg = v.querySelector('svg');
+    svg.addEventListener('mousemove', (e) => {
+      const r = e.target.closest('rect.leaf');
+      if (!r) { tip.hidden = true; return; }
+      const f = d.files[+r.dataset.file];
+      const s = health.get(+r.dataset.file);
+      tip.innerHTML = `<b>${esc(f.p)}</b><br>${fmt(f.loc)} lines${s ? ` · ${s.dead} of ${s.total} exports unused${s.testedOnly ? ` (${s.testedOnly} only tested)` : ''}` : ''}${f.k === 't' ? ' · test' : f.k === 'g' ? ' · generated' : ''}`;
+      tip.hidden = false;
+      tip.style.left = Math.min(e.clientX + 14, innerWidth - 330) + 'px';
+      tip.style.top = e.clientY + 14 + 'px';
+    });
+    svg.addEventListener('mouseleave', () => { tip.hidden = true; });
+    svg.addEventListener('click', (e) => {
+      const g = e.target.closest('[data-project]');
+      if (g) { state.areaRoot = +g.dataset.project; renderAreas(v); return; }
+      const leaf = e.target.closest('rect.leaf');
+      if (!leaf) return;
+      const fileIdx = +leaf.dataset.file;
+      if (rootProject === null) { state.areaRoot = d.files[fileIdx].j; renderAreas(v); return; }
+      const { sym } = derive(d);
+      const pick = sym.filter((s) => s.f === fileIdx && s.k !== 'type').sort((a, b) => (statusOf(a) === 'used') - (statusOf(b) === 'used'))[0];
+      if (pick) { tip.hidden = true; select(pick.i); }
+    });
+    $('#up')?.addEventListener('click', () => { state.areaRoot = null; renderAreas(v); });
+  }
+
+  render();
+})();
+</script>

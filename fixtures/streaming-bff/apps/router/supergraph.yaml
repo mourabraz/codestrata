@@ -1,0 +1,11 @@
+# rover supergraph compose --config apps/router/supergraph.yaml
+federation_version: =2.11.0
+subgraphs:
+  catalog:
+    routing_url: http://catalog-subgraph:4101/graphql
+    schema:
+      subgraph_url: http://localhost:4101/graphql
+  availability:
+    routing_url: http://availability-subgraph:4102/graphql
+    schema:
+      subgraph_url: http://localhost:4102/graphql

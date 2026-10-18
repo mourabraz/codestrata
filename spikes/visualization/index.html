@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>codestrata · renderer spike</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <aside>
+      <h1>Renderer spike</h1>
+      <label>Renderer
+        <select id="lib">
+          <option value="sigma">Sigma.js 4 (WebGL)</option>
+          <option value="sigma3">Sigma.js 3 (WebGL)</option>
+          <option value="cy-canvas">Cytoscape.js (canvas)</option>
+          <option value="cy-webgl">Cytoscape.js (WebGL)</option>
+        </select>
+      </label>
+      <label>Dataset
+        <select id="dataset">
+          <option value="fixture">fixture (79 files)</option>
+          <option value="hive" selected>hive (2 092 files)</option>
+          <option value="twenty">twenty (33 122 files)</option>
+        </select>
+      </label>
+      <label>View
+        <select id="scenario">
+          <option value="projects">Projects</option>
+          <option value="project-files">Project → files (largest project)</option>
+          <option value="ego">Ego view (most imported file)</option>
+          <option value="full">Whole graph (stress)</option>
+        </select>
+      </label>
+      <label>Stress size <input id="limit" type="number" value="5000" step="1000" min="100" /></label>
+      <label>Find file <input id="search" placeholder="path fragment, Enter → ego view" /></label>
+      <div class="buttons">
+        <button id="render">Render</button>
+        <button id="bench">Pan/zoom 3 s</button>
+      </div>
+      <p class="hint">Click a project to drill down, a file to open its ego view. Hover to highlight neighbours.</p>
+      <h2 id="title"></h2>
+      <table id="metrics"></table>
+    </aside>
+    <main id="stage"></main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

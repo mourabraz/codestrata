@@ -1,0 +1,27 @@
+{
+  "name": "@streaming/bff",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "start": "tsx src/main.ts"
+  },
+  "dependencies": {
+    "@streaming/bff-config": "workspace:*",
+    "@streaming/core-services": "workspace:*",
+    "@streaming/envelop-plugins": "workspace:*",
+    "@streaming/gql-common": "workspace:*",
+    "@streaming/gql-module-availability": "workspace:*",
+    "@streaming/gql-module-catalog": "workspace:*",
+    "@streaming/gql-module-layout": "workspace:*",
+    "@streaming/gql-module-promotions": "workspace:*",
+    "@streaming/http-client": "workspace:*"
+  },
+  "nx": {
+    "tags": [
+      "type:app",
+      "scope:bff"
+    ]
+  }
+}

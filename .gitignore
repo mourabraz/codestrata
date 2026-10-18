@@ -1,0 +1,7 @@
+node_modules/
+.nx/
+.DS_Store
+
+# Large spike data that the spike scripts regenerate (see each spike's README)
+spikes/visualization/data/
+spikes/design/data/hive.usage.json

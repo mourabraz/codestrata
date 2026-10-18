@@ -1,0 +1,6 @@
+query TrendingRail {
+  trending {
+    urn
+    name
+  }
+}

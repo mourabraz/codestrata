@@ -1,0 +1,20 @@
+{
+  "name": "@streaming/test-utils",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@streaming/http-client": "workspace:*",
+    "@streaming/core-services": "workspace:*"
+  },
+  "nx": {
+    "tags": [
+      "type:test"
+    ]
+  }
+}

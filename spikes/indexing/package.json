@@ -1,0 +1,15 @@
+{
+  "name": "spike-indexing",
+  "private": true,
+  "type": "module",
+  "description": "Throwaway spike: measures indexing speed and precision. Not part of the app.",
+  "dependencies": {
+    "oxc-parser": "0.154.0",
+    "oxc-resolver": "11.24.2",
+    "typescript": "6.0.3",
+    "typescript7": "npm:typescript@7.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0"
+  }
+}

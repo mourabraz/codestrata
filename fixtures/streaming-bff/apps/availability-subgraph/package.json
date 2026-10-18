@@ -1,0 +1,23 @@
+{
+  "name": "@streaming/availability-subgraph",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "start": "tsx src/main.ts"
+  },
+  "dependencies": {
+    "@streaming/bff-config": "workspace:*",
+    "@streaming/core-services": "workspace:*",
+    "@streaming/gql-common": "workspace:*",
+    "@streaming/gql-module-availability": "workspace:*",
+    "@streaming/http-client": "workspace:*"
+  },
+  "nx": {
+    "tags": [
+      "type:subgraph",
+      "scope:availability"
+    ]
+  }
+}

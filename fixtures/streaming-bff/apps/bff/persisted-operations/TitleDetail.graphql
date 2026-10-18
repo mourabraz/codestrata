@@ -1,0 +1,25 @@
+query TitleDetail($urn: URN!, $region: String!) {
+  title(urn: $urn) {
+    urn
+    name
+    synopsis
+    year
+    genres
+    cast {
+      urn
+      name
+    }
+    similar {
+      urn
+      name
+    }
+    availability(region: $region) {
+      available
+      updatedAt
+      price {
+        amount
+        currency
+      }
+    }
+  }
+}
