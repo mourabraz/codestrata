@@ -6,8 +6,9 @@ An open source, local tool that analyses a software project on disk (dependencie
 
 - **Phase 0 (feasibility) is done**: fixture, spikes, documentation and the initial plan are closed. **Next: phase 1** in `docs/plan.md` (foundations and structural map).
 - Before scaffolding phase 1, decide the two open questions in `docs/plan.md` (SQLite: `node:sqlite` vs `better-sqlite3`; minimum Node version) and record each as a new ADR.
-- Git: initialised on 2026-10-18 (branch `main`, remote `origin` = `github.com/mourabraz/codestrata`); the first commit was still pending at that date.
-- GitHub repo settings are applied (public, description/topics, squash-only merges, secret scanning + push protection, Dependabot alerts, private vulnerability reporting, approval required for all external contributors' workflows, read-only workflow token). **Pending after the first push**: the `main` ruleset in `.github/rulesets/main.json` (no deletion, no force push, PRs required with 0 approvals because a sole maintainer cannot approve their own PRs, squash only). Apply it with `gh api -X POST repos/mourabraz/codestrata/rulesets --input .github/rulesets/main.json`. When CI exists (phase 1), add its checks to this ruleset as required status checks.
+- Git: first commit `edcfd62` pushed to `github.com/mourabraz/codestrata` (branch `main`) on 2026-10-18.
+- GitHub repo settings are applied (public, description/topics, squash-only merges, secret scanning + push protection, Dependabot alerts, private vulnerability reporting, approval required for all external contributors' workflows, read-only workflow token).
+- **`main` is protected** by the "Protect main" ruleset (defined in `.github/rulesets/main.json`): no deletion, no force push, changes only through pull requests (0 approvals, since a sole maintainer cannot approve their own PRs), squash merge only. Work on a branch and open a PR. When CI exists (phase 1), add its checks to the ruleset as required status checks.
 - Name reserved: npm package `codestrata` (placeholder `0.0.0-stage`), npm org `@codestrata`, GitHub repo `mourabraz/codestrata`.
 
 ## Where things are
